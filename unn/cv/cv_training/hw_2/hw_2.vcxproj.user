@@ -4,9 +4,4 @@
     <LocalDebuggerEnvironment>PATH=D:\OpenCV\opencv\build\x64\vc11\bin;%PATH%</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerEnvironment>PATH=D:\OpenCV\opencv\build\x64\vc11\bin;%PATH%</LocalDebuggerEnvironment>
-    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>lena.png 0.5</LocalDebuggerCommandArguments>
-  </PropertyGroup>
 </Project>
