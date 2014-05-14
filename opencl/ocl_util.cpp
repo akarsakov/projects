@@ -1,6 +1,11 @@
-#include <CL\opencl.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include "ocl_util.h"
 
-cl_context CreateContext()
+using namespace std;
+
+cl_context CreateContext(int platrform_num)
 {
 	cl_int errNum;
 	cl_uint numPlatforms;
@@ -26,8 +31,7 @@ cl_context CreateContext()
 		cout << "Platform name: " << platform_name << endl;
 	}
 
-	// Choose first platform
-	cl_context_properties contextProperties[] = { CL_CONTEXT_PLATFORM, (cl_context_properties)platformIds[0], 0 };
+	cl_context_properties contextProperties[] = { CL_CONTEXT_PLATFORM, (cl_context_properties)platformIds[platrform_num], 0 };
 	context = clCreateContextFromType(contextProperties, CL_DEVICE_TYPE_GPU, NULL, NULL, &errNum);
 
 	if (errNum != CL_SUCCESS)
@@ -132,29 +136,34 @@ cl_program CreateProgram(cl_context context, cl_device_id device, const char* fi
 	return program;
 }
 
-cl_kernel CreateKernel(cl_program prog, const char kernelName[])
+cl_kernel CreateKernel(cl_program prog, const char* kernelName)
 {
 	cl_kernel kernel = clCreateKernel(prog, kernelName, NULL);
-	if (kernel == NULL)
-	{
-		cout << "Failed to create kernel" << endl;
-		Cleanup(context, commandQueue, program, kernel, memObjects);
-		return 1;
-	}
- // Create memory objects that will be used as arguments to
- // kernel. First create host memory arrays that will be
- // used to store the arguments to the kernel
- float result[ARRAY_SIZE];
- float a[ARRAY_SIZE];
- float b[ARRAY_SIZE];
- for (int i = 0; i < ARRAY_SIZE; i++)
- {
- a[i] = (float)i;
- b[i] = (float)(i * 2);
- }
- if (!CreateMemObjects(context, memObjects, a, b))
- {
- Cleanup(context, commandQueue, program, kernel, memObjects);
- return 1;
- }
+    return kernel;
+}
+
+cl_mem_flags GetOptimalMemoryFlags(cl_device_id device_id)
+{
+    cl_int errNum;
+    cl_bool isUnified = CL_FALSE;
+    size_t sz = 0;
+    cl_mem_flags flag = CL_MEM_COPY_HOST_PTR;
+    errNum = clGetDeviceInfo(device_id, CL_DEVICE_HOST_UNIFIED_MEMORY, sizeof(isUnified), &isUnified, &sz);
+    if (errNum == CL_SUCCESS && isUnified)
+        flag = CL_MEM_USE_HOST_PTR;
+    return flag;
+}
+
+void CleanUp(cl_context context, cl_command_queue queue, cl_device_id device, cl_program prog, cl_kernel kernel)
+{
+    if (kernel != NULL)
+        clReleaseKernel(kernel);
+    if (prog != NULL)
+        clReleaseProgram(prog);
+    if (device != NULL)
+        clReleaseDevice(device);
+    if (queue != NULL)
+        clReleaseCommandQueue(queue);
+    if (context != NULL)
+        clReleaseContext(context);
 }
