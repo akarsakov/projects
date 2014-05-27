@@ -124,3 +124,29 @@ string Data::getClassName(int class_id)
     }
     return f->second;
 }
+
+void Data::normalize()
+{
+    for (int i=0; i<getNumFeatures(); i++)
+    {
+        if (header[i] != "class")
+        {
+            float min_value = FLT_MAX;
+            float max_value = FLT_MIN;
+            for (int j=0; j<getNumExamples(); j++)
+            {
+                if (data[j][i] < 0)
+                    continue;
+                min_value = min(min_value, data[j][i]);
+                max_value = max(max_value, data[j][i]);
+            }
+
+            for (int j=0; j<getNumExamples(); j++)
+            {
+                if (data[j][i] < 0)
+                    continue;
+                data[j][i] = (data[j][i] - min_value) / (max_value - min_value);
+            }
+        }
+    }
+}

@@ -25,6 +25,9 @@ public:
     float getFeatureValue(int example, int feature);
     std::vector<float> getExampleVector(int example);
     std::string getClassName(int class_id);
+
+private:
+    void normalize();
 };
 
 #endif /*__DATA__*/

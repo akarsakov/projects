@@ -13,5 +13,6 @@ int main(int argc, char *argv[])
     }
     string filename(argv[1]);
     Data data(filename);
+    cout << "test - " << data.getFeatureValue(100, 4) << endl;
     return 0;
 }
