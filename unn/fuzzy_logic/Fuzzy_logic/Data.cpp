@@ -52,7 +52,7 @@ Data::Data(string filename)
                 if (value == "?")
                     example.push_back(-1.f);
                 else
-                    example.push_back(atof(value.c_str()));
+                    example.push_back( (float) atof(value.c_str()));
             }
             else
             {
@@ -70,7 +70,7 @@ Data::Data(string filename)
                     class_id = current_class_id++;
                     class_map[class_id] = value;
                 }
-                example.push_back(class_id);
+                example.push_back((float) class_id);
             }
             index++;
         }
@@ -85,10 +85,10 @@ Data::Data(string filename)
 
     file.close();
 
-    cout << "Summary:" << endl;
+    cout << "Summary (" << filename << "): " << endl;
     cout << "Number of examples: " << data.size() << endl;
     cout << "Number of features: " << header.size() << endl;
-    cout << "Number of classes: " << current_class_id-1 << endl;
+    cout << "Number of classes: " << class_map.size() << endl;
 }
 
 float Data::getFeatureValue(int example, int feature)

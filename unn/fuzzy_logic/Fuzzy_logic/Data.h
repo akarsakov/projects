@@ -20,6 +20,7 @@ public:
 
     int getNumFeatures() { return (int) header.size(); };
     int getNumExamples() { return (int) data.size(); };
+    int getNumClasses() { return (int) class_map.size(); };
 
     float getFeatureValue(int example, int feature);
     std::vector<float> getExampleVector(int example);
