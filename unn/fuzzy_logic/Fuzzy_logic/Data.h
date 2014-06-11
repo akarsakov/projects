@@ -18,7 +18,7 @@ public:
     Data(std::string filename);
     virtual ~Data() { };
 
-    int getNumFeatures() { return (int) header.size(); };
+    int getNumFeatures() { return (int) header.size(); };  
     int getNumExamples() { return (int) data.size(); };
     int getNumClasses() { return (int) class_map.size(); };
 
