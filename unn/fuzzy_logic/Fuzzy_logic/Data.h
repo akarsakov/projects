@@ -26,8 +26,7 @@ public:
     std::vector<float> getExampleVector(int example);
     std::string getClassName(int class_id);
 
-private:
-    void normalize();
+    void normalize(float a, float b);
 };
 
 #endif /*__DATA__*/

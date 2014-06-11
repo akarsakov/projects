@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     }
     string filename(argv[1]);
     Data data(filename);
-    cout << "test - " << data.getFeatureValue(100, 4) << endl;
+    data.normalize(0,1);
+    cout << "test - " << data.getFeatureValue(1, 3) << endl;
     return 0;
 }

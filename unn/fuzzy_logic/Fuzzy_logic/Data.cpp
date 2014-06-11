@@ -125,7 +125,7 @@ string Data::getClassName(int class_id)
     return f->second;
 }
 
-void Data::normalize()
+void Data::normalize(float a, float b)
 {
     for (int i=0; i<getNumFeatures(); i++)
     {
@@ -145,7 +145,7 @@ void Data::normalize()
             {
                 if (data[j][i] < 0)
                     continue;
-                data[j][i] = (data[j][i] - min_value) / (max_value - min_value);
+                data[j][i] = a + (data[j][i] - min_value)*(b - a) / (max_value - min_value);
             }
         }
     }
