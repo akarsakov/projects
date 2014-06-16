@@ -24,7 +24,8 @@ public:
     int getNumClasses() { return (int) class_map.size(); };
 
     float getFeatureValue(int example, int feature);
-    std::vector<float> getExampleVector(int example);
+    std::vector<float> getExampleXVector(int example);
+	float getExampleY(int example);
     std::string getClassName(int class_id);
 
     void normalize(float a, float b);

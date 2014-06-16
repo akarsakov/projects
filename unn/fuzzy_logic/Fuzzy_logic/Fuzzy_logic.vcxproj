@@ -67,11 +67,13 @@
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="KohonenNetwork.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ModelTSK0.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data.h" />
     <ClInclude Include="KohonenNetwork.h" />
+    <ClInclude Include="Model_TSK0.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

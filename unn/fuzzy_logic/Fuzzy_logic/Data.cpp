@@ -102,7 +102,7 @@ float Data::getFeatureValue(int example, int feature)
     return data[example][feature];
 }
 
-std::vector<float> Data::getExampleVector(int example)
+std::vector<float> Data::getExampleXVector(int example)
 {
     if (example < 0 || example >= getNumExamples())
     {
@@ -114,6 +114,11 @@ std::vector<float> Data::getExampleVector(int example)
 	if (class_column >= 0)
 		res.erase(res.begin() + class_column);
     return res;
+}
+
+float Data::getExampleY(int example)
+{
+	return data[example][class_column];
 }
 
 string Data::getClassName(int class_id)

@@ -59,7 +59,7 @@ void KohonenNetwork::trainNetwork()
 		vector<vector<float>> copy_centers = centers;
         for (int i=0; i<data.getNumExamples(); i++)
         {
-            Point x = data.getExampleVector(i);
+            Point x = data.getExampleXVector(i);
 			int w, r;
 			float w_val, r_val = FLT_MAX;
 			vector<float> distances;
@@ -95,11 +95,56 @@ void KohonenNetwork::trainNetwork()
 		}
 		shift /= num_clusters;
 	} while (epoch_number < max_epoch && shift > eps);
+	
+	gaussWidths.resize(centers.size(), FLT_MAX);
+	b0.resize(centers.size(), 0);
+	
+	// calculate Gauss widths
+	for (int i=0; i<centers.size(); i++)
+	{
+		for (int j=0; j<centers.size(); j++)
+		{
+			if (i == j)
+				continue;
+			gaussWidths[i] = min(EuclidDistance(centers[i], centers[j]), gaussWidths[i]) / 1.5;
+		}
+	}
+
+	//calculate b0
+	for (int centerId=0; centerId<centers.size(); centerId++)
+	{
+		float sum_b = 0.f;
+		float sum_alpha = 0.f;
+
+		for (int exampleId=0; exampleId<data.getNumExamples(); exampleId++)
+		{
+			float alpha = 1.f;
+			vector<float> example = data.getExampleXVector(exampleId);
+			for (int i=0; i<dimension; i++)
+			{
+				alpha *= exp(-(example[i] - centers[centerId][i])*(example[i] - centers[centerId][i]) / (2*gaussWidths[centerId]));
+			}
+			sum_alpha += alpha;
+			sum_b += alpha * data.getExampleY(exampleId);
+		}
+
+		b0[centerId] = sum_b / sum_alpha;
+	}
 }
 
-std::vector<std::vector<float>> KohonenNetwork::getCenters()
+vector<vector<float>> KohonenNetwork::getCenters()
 {
 	return centers;
+}
+
+vector<float> KohonenNetwork::getGaussWidths()
+{
+	return gaussWidths;
+}
+
+vector<float> KohonenNetwork::getVectorB()
+{
+	return b0;
 }
 
 void KohonenNetwork::updateCenter(Point x, int index, float alpha)

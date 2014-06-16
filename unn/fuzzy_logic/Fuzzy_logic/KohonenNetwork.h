@@ -18,6 +18,8 @@ private:
     int dimension;
 
     std::vector<Point> centers;
+	std::vector<float> gaussWidths;
+	std::vector<float> b0;
     std::vector<int> num_victories;
 public:
     KohonenNetwork(Data& d, int num_clusters, float alpha_winner, float alpha_loser, float epsilon, int max_epoch);
@@ -25,6 +27,8 @@ public:
 
     void trainNetwork();
 	std::vector<std::vector<float>> getCenters();
+	std::vector<float> getGaussWidths();
+	std::vector<float> getVectorB();
 
 private:
     float EuclidDistance(Point x, Point y);
