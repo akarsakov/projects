@@ -18,8 +18,8 @@ Data::Data(string filename)
     }
 
     // read header
+	class_column = -1;
     string line;
-    int class_column;
     if (getline(file, line))
     {
         stringstream line_stream(line);
@@ -110,7 +110,10 @@ std::vector<float> Data::getExampleVector(int example)
         msg << "Incorrect index (" << example << ")";
         Error(msg.str());
     }
-    return data[example];
+	vector<float> res = data[example];
+	if (class_column >= 0)
+		res.erase(res.begin() + class_column);
+    return res;
 }
 
 string Data::getClassName(int class_id)

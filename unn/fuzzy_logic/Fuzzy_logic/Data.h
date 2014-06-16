@@ -10,6 +10,7 @@ class Data
 private:
     int numFeatures;
     int numExamples;
+	int class_column;
 
     std::vector<std::string> header;
     std::vector<std::vector<float>> data;

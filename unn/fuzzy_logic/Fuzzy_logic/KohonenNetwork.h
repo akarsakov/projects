@@ -24,6 +24,7 @@ public:
     ~KohonenNetwork() { };
 
     void trainNetwork();
+	std::vector<std::vector<float>> getCenters();
 
 private:
     float EuclidDistance(Point x, Point y);

@@ -3,6 +3,7 @@
 #include <time.h>
 #include <algorithm>
 #include <functional>
+#include <iterator>
 #include "KohonenNetwork.h"
 #include "utils.h"
 
@@ -27,14 +28,14 @@ KohonenNetwork::KohonenNetwork(Data& d, int num_cl, float alpha_winner, float al
     {
         Point new_center;
         for (int j=0; j<dimension; j++)
-            new_center[j] = (float) rand() / RAND_MAX;
+			new_center.push_back((float) rand() / RAND_MAX);
         centers[i] = new_center;
     }
 };
 
 float KohonenNetwork::EuclidDistance(Point x, Point y)
 {
-    if (x.size() != y.size() != dimension)
+    if (x.size() != y.size() || y.size() != dimension)
         Error("Points dimensions not equal");
 
     float dist = 0.f;
@@ -51,24 +52,62 @@ void KohonenNetwork::trainNetwork()
 {
     int victories = num_clusters;
     int epoch_number = 0;
-
+	float shift;
     do
     {
         epoch_number++;
+		vector<vector<float>> copy_centers = centers;
         for (int i=0; i<data.getNumExamples(); i++)
         {
             Point x = data.getExampleVector(i);
-            vector<float> distances(num_clusters);
+			int w, r;
+			float w_val, r_val = FLT_MAX;
+			vector<float> distances;
             for (int j=0; j<num_clusters; j++)
             {
-                distances.push_back(num_victories[j]*EuclidDistance(x, centers[j]) / victories);
+                float distance = num_victories[j]*EuclidDistance(x, centers[j]) / victories;
+				distances.push_back(distance);
+			}
 
+			w_val = *min_element(distances.begin(), distances.end());
+			w = distance(distances.begin(), min_element(distances.begin(), distances.end()));
+
+			for (int j=0; j<num_clusters; j++)
+			{
+				if (distances[j] < r_val && distances[j] > w_val)
+				{
+					r_val = distances[j];
+					r = j;
+				}
             }
 
-
+			updateCenter(x, w, alpha_w);
+			updateCenter(x, r, -alpha_l);
+			num_victories[w] += 1;
+			victories++;
+			alpha_w -= alpha_w*epoch_number/max_epoch;
+			alpha_l -= alpha_l*epoch_number/max_epoch;
         }
+		shift = 0.f;
+		for (int i=0; i<num_clusters; i++)
+		{
+			shift += EuclidDistance(copy_centers[i], centers[i]);
+		}
+		shift /= num_clusters;
+	} while (epoch_number < max_epoch && shift > eps);
+}
 
+std::vector<std::vector<float>> KohonenNetwork::getCenters()
+{
+	return centers;
+}
 
-
-    } while (epoch_number < max_epoch);
+void KohonenNetwork::updateCenter(Point x, int index, float alpha)
+{
+	for (int i=0; i<dimension; i++)
+	{
+		if (x[i] < 0)
+			continue;
+		centers[index][i] = centers[index][i] + alpha*(x[i] - centers[index][i]);
+	}
 }
