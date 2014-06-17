@@ -95,6 +95,8 @@ void KohonenNetwork::trainNetwork()
 		}
 		shift /= num_clusters;
 	} while (epoch_number < max_epoch && shift > eps);
+
+	filterCenters();
 	
 	gaussWidths.resize(centers.size(), FLT_MAX);
 	b0.resize(centers.size(), 0);
@@ -154,5 +156,25 @@ void KohonenNetwork::updateCenter(Point x, int index, float alpha)
 		if (x[i] < 0)
 			continue;
 		centers[index][i] = centers[index][i] + alpha*(x[i] - centers[index][i]);
+	}
+}
+
+void KohonenNetwork::filterCenters()
+{
+	for (int i=0; i<centers.size();)
+	{
+		bool inRange = true;
+		for (int j=0; j<dimension; j++)
+		{
+			if (centers[i][j] < 0 || centers[i][j] > 1)
+			{
+				inRange = false;
+				break;
+			}
+		}
+		if (!inRange)
+			centers.erase(centers.begin()+i);
+		else
+			i++;
 	}
 }

@@ -1,6 +1,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
 #include "Data.h"
 #include "utils.h"
@@ -91,6 +93,10 @@ Data::Data(string filename)
     cout << "Number of classes: " << class_map.size() << endl;
 }
 
+Data::Data(int numE, int numF, int cl_col): numExamples(numE), numFeatures(numF), class_column(cl_col)
+{
+}
+
 float Data::getFeatureValue(int example, int feature)
 {
     if (example < 0 || example >= getNumExamples() || feature < 0 || feature >= getNumFeatures())
@@ -157,4 +163,27 @@ void Data::normalize(float a, float b)
             }
         }
     }
+}
+
+void Data::shuffleExamples(float percentPermutation)
+{
+	srand(time(NULL));
+	int numPermutations = getNumExamples()*percentPermutation;
+
+	for (int i=0; i<numPermutations; i++)
+	{
+		int first = rand()*numExamples/RAND_MAX;
+		int second = rand()*numExamples/RAND_MAX;
+		std::swap(data[first], data[second]);
+	}
+}
+
+Data Data::getSubset(int startIndex, int endIndex)
+{
+	int numExamples = endIndex - startIndex;
+	Data result(numExamples, numFeatures, class_column);
+	result.data.assign(data.begin()+startIndex, data.begin()+endIndex);
+	result.class_map = class_map;
+	result.header = header;
+	return result;
 }

@@ -32,7 +32,8 @@ public:
 
 private:
     float EuclidDistance(Point x, Point y);
-    void updateCenter(Point x, int index, float alpha); 
+    void updateCenter(Point x, int index, float alpha);
+	void filterCenters();
 };
 
 #endif /*__KOHONEN_NETWORK__*/

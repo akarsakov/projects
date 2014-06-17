@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     string filename(argv[1]);
     Data data(filename);
     data.normalize(0,1);
-	KohonenNetwork identification(data, 3, 0.1f, 0.1f, 0.00001f, 5);
+	KohonenNetwork identification(data, 7, 0.1f, 0.1f, 0.00001f, 5);
 	identification.trainNetwork();
 	vector<vector<float>> centers = identification.getCenters();
 	for (auto it=centers.begin(); it!=centers.end(); it++)

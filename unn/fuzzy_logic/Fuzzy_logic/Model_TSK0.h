@@ -12,10 +12,14 @@ private:
 	std::vector<std::vector<float>> c;
 	std::vector<std::vector<float>> a;
 	std::vector<float> b0;
+	int input_dimension;
+	int num_rules;
 public:
 	ModelTSK0(Data data);
 
 	void modelOptimization();
+
+	float getAnswer(std::vector<float> x);
 
 
 };
