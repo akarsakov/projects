@@ -169,20 +169,23 @@ void Data::shuffleExamples(float percentPermutation)
 {
 	srand(time(NULL));
 	int numPermutations = getNumExamples()*percentPermutation;
-
+    int numExamples = getNumExamples();
 	for (int i=0; i<numPermutations; i++)
 	{
-		int first = rand()*numExamples/RAND_MAX;
+        int first = rand()*numExamples/RAND_MAX;
 		int second = rand()*numExamples/RAND_MAX;
 		std::swap(data[first], data[second]);
 	}
 }
 
-Data Data::getSubset(int startIndex, int endIndex)
+Data Data::getSubset(vector<int> indexes)
 {
-	int numExamples = endIndex - startIndex;
+	int numExamples = indexes.size();
 	Data result(numExamples, numFeatures, class_column);
-	result.data.assign(data.begin()+startIndex, data.begin()+endIndex);
+    for (auto it=indexes.begin(); it!=indexes.end(); it++)
+    {
+        result.data.push_back(data[*it]);
+    }
 	result.class_map = class_map;
 	result.header = header;
 	return result;

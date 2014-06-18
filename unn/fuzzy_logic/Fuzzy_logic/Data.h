@@ -17,7 +17,7 @@ private:
     std::map<int, std::string> class_map;
 public:
     Data(std::string filename);
-	Data(int numF, int cl_col);
+	Data(int numE, int numF, int cl_col);
     virtual ~Data() { };
 
     int getNumFeatures() { return (int) header.size(); };  
@@ -31,7 +31,7 @@ public:
 
     void normalize(float a, float b);
 	void shuffleExamples(float percentPermutation);
-	Data getSubset(int startIndex, int endIndex);
+	Data getSubset(std::vector<int> indexes);
 };
 
 #endif /*__DATA__*/
