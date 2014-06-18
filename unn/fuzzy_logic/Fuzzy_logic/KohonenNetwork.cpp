@@ -22,7 +22,7 @@ KohonenNetwork::KohonenNetwork(Data& d, int num_cl, float alpha_winner, float al
     dimension = data.getNumFeatures() - 1;
     num_victories.resize(num_clusters, 1);
 
-    srand(time(NULL));
+    srand((unsigned int) time(NULL));
     centers.resize(num_clusters);
     for (int i=0; i<num_clusters; i++)
     {
@@ -102,18 +102,18 @@ void KohonenNetwork::trainNetwork()
 	b0.resize(centers.size(), 0);
 	
 	// calculate Gauss widths
-	for (int i=0; i<centers.size(); i++)
+	for (size_t i=0; i<centers.size(); i++)
 	{
-		for (int j=0; j<centers.size(); j++)
+		for (size_t j=0; j<centers.size(); j++)
 		{
 			if (i == j)
 				continue;
-			gaussWidths[i] = min(EuclidDistance(centers[i], centers[j]), gaussWidths[i]) / 1.5;
+			gaussWidths[i] = (float) min(EuclidDistance(centers[i], centers[j]), gaussWidths[i]) / 1.5f;
 		}
 	}
 
 	//calculate b0
-	for (int centerId=0; centerId<centers.size(); centerId++)
+	for (size_t centerId=0; centerId<centers.size(); centerId++)
 	{
 		float sum_b = 0.f;
 		float sum_alpha = 0.f;
@@ -161,7 +161,7 @@ void KohonenNetwork::updateCenter(Point x, int index, float alpha)
 
 void KohonenNetwork::filterCenters()
 {
-	for (int i=0; i<centers.size();)
+	for (size_t i=0; i<centers.size();)
 	{
 		bool inRange = true;
 		for (int j=0; j<dimension; j++)

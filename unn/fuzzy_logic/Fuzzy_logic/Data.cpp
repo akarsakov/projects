@@ -167,8 +167,8 @@ void Data::normalize(float a, float b)
 
 void Data::shuffleExamples(float percentPermutation)
 {
-	srand(time(NULL));
-	int numPermutations = getNumExamples()*percentPermutation;
+	srand((unsigned int) time(NULL));
+	int numPermutations = (int) (getNumExamples()*percentPermutation);
     int numExamples = getNumExamples();
 	for (int i=0; i<numPermutations; i++)
 	{

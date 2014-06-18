@@ -38,8 +38,8 @@ float CrossValidation::getError()
 
         for (int j=0; j<test.getNumExamples(); j++)
         {
-            int answer = model.getAnswer(test.getExampleXVector(j));
-            int y = test.getExampleY(j);
+            int answer = (int) model.getAnswer(test.getExampleXVector(j));
+            int y = (int) test.getExampleY(j);
             if (answer != y)
                 error += 1;
         }
