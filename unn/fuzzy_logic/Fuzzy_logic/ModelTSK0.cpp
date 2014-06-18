@@ -16,39 +16,75 @@ ModelTSK0::ModelTSK0(Data _data): train_data(_data)
 	for (size_t centerId=0; centerId<gaussWidths.size(); centerId++)
 		a[centerId].resize(train_data.getNumFeatures(), gaussWidths[centerId]);
 	b0 = identification.getVectorB();
+	maxEpoch = 5;
+	sigma = 0.01f;
 }
 
 void ModelTSK0::modelOptimization()
 {
+	int epochNumber = 0;
+	do
+	{
+		epochNumber++;
+		for (int i=0; i<train_data.getNumExamples(); i++)
+		{
+			vector<float> x = train_data.getExampleXVector(i);
+			float y = train_data.getExampleY(i);
+			float answer = getAnswer(x);
 
+			vector<float> level3 = getLevel3(x);
+			vector<float> level4 = getLevel4(level3);
+
+			for (int ruleId=0; ruleId<num_rules; ruleId++)
+			{
+				float deltaB = 2*(answer - y)*level3[ruleId]/level4[1];
+				
+				float temp = 1.f;
+				for (int k=0; k<x.size(); k++)
+				{
+					temp *= exp(-(x[k] - c[ruleId][k])*(x[k] - c[ruleId][k])/(2*a[ruleId][k]));
+				}
+			}
+		}
+	} while (epochNumber < maxEpoch);
 }
 
-float ModelTSK0::getAnswer(vector<float> x)
+vector<float> ModelTSK0::getLevel3(vector<float> x)
 {
-	// calculate level 3
 	vector<float> level3(num_rules);
 	for (int i=0; i<num_rules; i++)
 	{
 		float out = 1.f;
 		for (size_t j=0; j<x.size(); j++)
 		{
-			float e = exp(-(x[j] - c[i][j])*(x[j] - c[i][j])/(2*a[i][j]));
-			out *= e*e;
+			out *= exp(-(x[j] - c[i][j])*(x[j] - c[i][j])/(2*a[i][j]));
 		}
 		level3[i] = out;
 	}
+	return level3;
+}
 
-	// calculate level 4
-	float sum1 = 0.f;
-	float sum2 = 0.f;
+vector<float> ModelTSK0::getLevel4(vector<float> level3)
+{
+	vector<float> level4(2, 0.f);
 	for (int i=0; i<num_rules; i++)
 	{
-		sum1 += level3[i] * b0[i];
-		sum2 += level3[i];
+		level4[0] += level3[i] * b0[i];
+		level4[1] += level3[i];
 	}
+	return level4;
+}
 
+float ModelTSK0::getAnswer(vector<float> x)
+{
+	// calculate level 3
+	vector<float> level3 = getLevel3(x);
+
+	// calculate level 4
+	vector<float> level4 = getLevel4(level3);
+	
 	// calculate answer
-	float result = sum1/sum2;
+	float result = level4[0]/level4[1];
 	return (float) floor(result + 0.5);
     //return result;
 }

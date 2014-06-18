@@ -14,12 +14,18 @@ private:
 	std::vector<float> b0;
 	int input_dimension;
 	int num_rules;
+	int maxEpoch;
+	float sigma;
 public:
 	ModelTSK0(Data data);
 
 	void modelOptimization();
 
 	float getAnswer(std::vector<float> x);
+
+private:
+	std::vector<float> getLevel3(std::vector<float> x);
+	std::vector<float> getLevel4(std::vector<float> level3);
 
 
 };
