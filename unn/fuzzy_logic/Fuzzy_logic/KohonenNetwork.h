@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Data.h"
+#include "Rule.h"
 
 typedef std::vector<float> Point;
 
@@ -26,9 +27,7 @@ public:
     ~KohonenNetwork() { };
 
     void trainNetwork();
-	std::vector<std::vector<float>> getCenters();
-	std::vector<float> getGaussWidths();
-	std::vector<float> getVectorB();
+	std::vector<Rule> getRules();
 
 private:
     float EuclidDistance(Point x, Point y);

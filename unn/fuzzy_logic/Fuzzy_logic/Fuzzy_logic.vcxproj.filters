@@ -33,6 +33,9 @@
     <ClCompile Include="CrossValidation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data.h">
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CrossValidation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

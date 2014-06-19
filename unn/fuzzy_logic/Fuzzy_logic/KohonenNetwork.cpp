@@ -45,7 +45,7 @@ float KohonenNetwork::EuclidDistance(Point x, Point y)
             continue;
         dist += (x[i] - y[i])*(x[i] - y[i]);
     }
-    return dist;
+    return sqrt(dist);
 }
 
 void KohonenNetwork::trainNetwork()
@@ -134,19 +134,16 @@ void KohonenNetwork::trainNetwork()
 	}
 }
 
-vector<vector<float>> KohonenNetwork::getCenters()
+vector<Rule> KohonenNetwork::getRules()
 {
-	return centers;
-}
-
-vector<float> KohonenNetwork::getGaussWidths()
-{
-	return gaussWidths;
-}
-
-vector<float> KohonenNetwork::getVectorB()
-{
-	return b0;
+	vector<Rule> rules;
+	for (size_t centerId=0; centerId<centers.size(); centerId++)
+	{
+		vector<float> a(dimension, gaussWidths[centerId]);
+		Rule rule(a, centers[centerId], b0[centerId]);
+		rules.push_back(rule);
+	}
+	return rules;
 }
 
 void KohonenNetwork::updateCenter(Point x, int index, float alpha)

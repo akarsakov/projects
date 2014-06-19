@@ -35,6 +35,7 @@ float CrossValidation::getError()
         Data train = validation_data.getSubset(train_indexes);
 
         ModelTSK0 model(train);
+		model.modelOptimization();
 
         for (int j=0; j<test.getNumExamples(); j++)
         {
