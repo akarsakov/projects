@@ -1,5 +1,4 @@
 #include "CrossValidation.h"
-#include "Model_TSK0.h"
 #include <algorithm>
 #include <iostream>
 
@@ -10,12 +9,15 @@ CrossValidation::CrossValidation(Data data, int parts): validation_data(data), n
     validation_data.shuffleExamples(1.f);
 }
 
-float CrossValidation::getError()
+float CrossValidation::validate(KohonenNetworkParameters kohonenParams, ModelTSK0Parameters tskParams)
 {
+    validation_data.normalize(0,1);
 	int testDataSize = validation_data.getNumExamples() / num_parts;
     float total_error = 0;
 	for (int i=0; i<num_parts; i++)
 	{
+        cout << "################################" << endl;
+        cout << "Experiment #" << i << endl;
         float error = 0;
 		int startIndex = i*testDataSize;
 		int endIndex = min(validation_data.getNumExamples(), (i+1)*testDataSize);
@@ -34,12 +36,13 @@ float CrossValidation::getError()
         Data test = validation_data.getSubset(test_indexes);
         Data train = validation_data.getSubset(train_indexes);
 
-        ModelTSK0 model(train);
+        ModelTSK0 model(train, tskParams);
+        model.modelIdentification(kohonenParams);
 		model.modelOptimization();
 
         for (int j=0; j<test.getNumExamples(); j++)
         {
-            int answer = (int) model.getAnswer(test.getExampleXVector(j));
+            int answer = (int) model.predict(test.getExampleXVector(j));
             int y = (int) test.getExampleY(j);
             if (answer != y)
                 error += 1;
@@ -48,5 +51,9 @@ float CrossValidation::getError()
         cout << "Error: " << error << endl;
         total_error += error;
 	}
-    return (float) total_error / (num_parts);
+    
+    float validation_error = (float) total_error / (num_parts);
+    cout << "\n__________________________" << endl;
+    cout << "Accuracy: " << 1.f - validation_error << endl;
+    return validation_error;
 }

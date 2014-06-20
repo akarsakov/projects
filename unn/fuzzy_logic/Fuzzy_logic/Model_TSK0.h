@@ -3,7 +3,19 @@
 
 #include <vector>
 #include "Data.h"
+#include "KohonenNetwork.h"
 #include "Rule.h"
+
+struct ModelTSK0Parameters
+{
+    int maxEpoch;
+    float learningSpeed;
+    float epsilon;
+
+    ModelTSK0Parameters(int maxEp, float learningS, float eps): maxEpoch(maxEp),
+        learningSpeed(learningS), epsilon(eps)
+    { };
+};
 
 class ModelTSK0
 {
@@ -17,9 +29,13 @@ private:
 	float learningSpeed;
 	float eps;
 public:
-	ModelTSK0(Data data);
+	ModelTSK0(Data data, ModelTSK0Parameters params);
+    void modelIdentification(KohonenNetworkParameters params);
 	void modelOptimization();
-	float getAnswer(std::vector<float> x);
+	float predict(std::vector<float> x);
+private:
+    float getAnswer(std::vector<float> x);
+    float getAnswer(std::vector<float> x, std::vector<Rule>& specific_rules);
 };
 
 #endif /*__MODEL_TSK__*/

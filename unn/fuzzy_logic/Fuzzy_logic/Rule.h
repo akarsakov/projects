@@ -19,9 +19,11 @@ public:
 	float getConfedence() { return b0; };
 
 	void setA(std::vector<float> _a) { a = _a; };
+    void setA(int index, float val) { a[index] = val; };
 	std::vector<float> getA() { return a; };
 
 	void setC(std::vector<float> _c) { c = _c; };
+    void setC(int index, float val) { c[index] = val; };
 	std::vector<float> getC() { return c; };
 };
 

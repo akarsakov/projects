@@ -4,17 +4,20 @@
 #include <math.h>
 using namespace std;
 
-ModelTSK0::ModelTSK0(Data _data): train_data(_data)
+static const float h = 0.00001f;
+
+ModelTSK0::ModelTSK0(Data _data, ModelTSK0Parameters params): train_data(_data), 
+    learningSpeed(params.learningSpeed), maxEpoch(params.maxEpoch), eps(params.epsilon)
 {
 	input_dimension = train_data.getNumFeatures();
-	KohonenNetwork identification(train_data, 10, 0.01f, 0.005f, 0.00001f, 100);
+}
+
+void ModelTSK0::modelIdentification(KohonenNetworkParameters KohonenParams)
+{
+    KohonenNetwork identification(train_data, KohonenParams);
 	identification.trainNetwork();
 	rules = identification.getRules();
-	cout << "Number rules: " << rules.size() << endl;
-	
-	maxEpoch = 80;
-	learningSpeed = 0.01f;
-	eps = 0.001f;
+	cout << "\tNumber rules: " << rules.size() << endl;
 }
 
 void ModelTSK0::modelOptimization()
@@ -31,66 +34,93 @@ void ModelTSK0::modelOptimization()
 			vector<float> x = train_data.getExampleXVector(i);
 			float y = train_data.getExampleY(i);
 
-			// calc sums and answers
-			float sum1 = 0.f;
-			float sum2 = 0.f;
-			vector<float> answers;
-			for (size_t ruleId=0; ruleId<rules.size(); ruleId++)
-			{
-				float ans = rules[ruleId].getAnswer(x);
-				answers.push_back(ans);
-				sum1 += ans * rules[ruleId].getConfedence();
-				sum2 += ans;
-			}
-			float error = sum1/sum2 - y;
+            float ans = getAnswer(x);
+            float fx = (ans-y)*(ans-y);
 
-			// calc deltas
-			for (size_t ruleId=0; ruleId<rules.size(); ruleId++)
-			{
-				vector<float> old_a = rules[ruleId].getA();
-				vector<float> old_c = rules[ruleId].getC();
-				float factor = error*answers[ruleId]/sum2;
+            // change weights
+            vector<Rule> new_rules = rules;
+            for (size_t ruleId=0; ruleId<rules.size(); ruleId++)
+            {
+                int dim = rules[ruleId].getA().size();
+                
+                // change a
+                for (int i=0; i<dim; i++)
+                {
+                    vector<Rule> mod_rules = rules;
+                    float old_a = mod_rules[ruleId].getA()[i];
+                    mod_rules[ruleId].setA(i, old_a + h);
+                    float fx_delta = (getAnswer(x, mod_rules) - y)*(getAnswer(x, mod_rules) - y);
+                    float df = (fx_delta - fx) / h;
+                    float new_a = old_a - learningSpeed*df;
+                    if (new_a < eps)
+                        new_a = eps;
+                    new_rules[ruleId].setA(i, new_a);
+                }
 
-				for (int i=0; i<x.size(); i++)
-				{
-					if (x[i] < 0)
-						continue;
-					float centr = factor*rules[ruleId].getConfedence();
-					float dif = x[i]-old_c[i];
-					float aVal = old_a[i];
-					old_c[i] -= learningSpeed*centr*dif/(aVal*aVal);
-					old_a[i] -= learningSpeed*centr*dif*dif/(aVal*aVal*aVal);
-				}
-				float old_b = rules[ruleId].getConfedence();
-				rules[ruleId].setConfedence(old_b - learningSpeed*factor);
-				rules[ruleId].setA(old_a);
-				rules[ruleId].setC(old_c);
-			}
-			sumError += error*error/2.f;
+                // change c
+                for (int i=0; i<dim; i++)
+                {
+                    vector<Rule> mod_rules = rules;
+                    float old_c = mod_rules[ruleId].getC()[i];
+                    mod_rules[ruleId].setC(i, old_c + h);
+                    float fx_delta = (getAnswer(x, mod_rules) - y)*(getAnswer(x, mod_rules) - y);
+                    float df = (fx_delta - fx) / h;
+                    float new_c = old_c - learningSpeed*df;
+                    if (new_c < 0.f)
+                        new_c = +0.f;
+                    if (new_c > 1.f)
+                        new_c = 1.f;
+                    new_rules[ruleId].setC(i, new_c);
+                }
+
+                //change b
+                {
+                    vector<Rule> mod_rules = rules;
+                    float old_b = mod_rules[ruleId].getConfedence();
+                    mod_rules[ruleId].setConfedence(old_b + h);
+                    float fx_delta = (getAnswer(x, mod_rules) - y)*(getAnswer(x, mod_rules) - y);
+                    float df = (fx_delta - fx) / h;
+                    float new_b = old_b - learningSpeed*df;
+                    new_rules[ruleId].setConfedence(new_b);
+                }
+            }
+
+            rules = new_rules;
+			sumError += fx/2.f;
 		}
 		curError = sumError / train_data.getNumExamples();
 		learningSpeed *= 1.0f - ((float) epochNumber)/maxEpoch;
 	} while (epochNumber < maxEpoch || curError < eps);
 	
-	cout << "Trained!" << endl;
+	cout << "\tModel TSK0 trained!" << endl;
 	cout << "\tEpoch number: " << epochNumber << endl;
 	cout << "\tError: " << curError << endl;
 }
 
+float ModelTSK0::predict(vector<float> x)
+{
+    return floor(getAnswer(x) + 0.5f);
+}
+
 float ModelTSK0::getAnswer(vector<float> x)
+{
+    return getAnswer(x, rules);
+}
+
+float ModelTSK0::getAnswer(vector<float> x, vector<Rule>& spec_rules)
 {
 	float sum1 = 0.f;
 	float sum2 = 0.f;
 
-	for (size_t ruleId=0; ruleId<rules.size(); ruleId++)
+	for (size_t ruleId=0; ruleId<spec_rules.size(); ruleId++)
 	{
-		float ans = rules[ruleId].getAnswer(x);
-		sum1 += ans * rules[ruleId].getConfedence();
+		float ans = spec_rules[ruleId].getAnswer(x);
+		sum1 += ans * spec_rules[ruleId].getConfedence();
 		sum2 += ans;
 	}
 	
 	// calculate answer
 	float result = sum1/sum2;
-	return (float) floor(result + 0.5);
-    //return result;
+	//return (float) floor(result + 0.5);
+    return result;
 }

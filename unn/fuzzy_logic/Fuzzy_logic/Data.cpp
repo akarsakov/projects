@@ -40,7 +40,7 @@ Data::Data(string filename)
         Error(msg.str());
     }
 
-    int current_class_id = 0;
+    int current_class_id = 1;
     while (getline(file, line))
     {
         stringstream line_stream(line);

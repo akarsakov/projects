@@ -7,6 +7,19 @@
 
 typedef std::vector<float> Point;
 
+struct KohonenNetworkParameters
+{
+    int num_clusters;
+    int maxEpoch;
+    float alpha_winner;
+    float alpha_loser;
+    float epsilon;
+
+    KohonenNetworkParameters(int num_cl, int maxEp, float alpha_w, float alpha_l, float eps):
+        num_clusters(num_cl), maxEpoch(maxEp), alpha_winner(alpha_w), alpha_loser(alpha_l), epsilon(eps)
+    { };
+};
+
 class KohonenNetwork
 {
 private:
@@ -23,7 +36,7 @@ private:
 	std::vector<float> b0;
     std::vector<int> num_victories;
 public:
-    KohonenNetwork(Data& d, int num_clusters, float alpha_winner, float alpha_loser, float epsilon, int max_epoch);
+    KohonenNetwork(Data& d, KohonenNetworkParameters params);
     ~KohonenNetwork() { };
 
     void trainNetwork();

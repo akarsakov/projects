@@ -14,7 +14,7 @@ float Rule::getAnswer(vector<float> x)
 	{
 		if (x[i] < 0)
 			continue;
-		answer *= (float) exp(-(x[i]-c[i])*(x[i]-c[i])/(2.f*a[i]*a[i]));
+		answer *= (float) exp(-(x[i]-c[i])*(x[i]-c[i])/(2.f*a[i]));
 	}
 	return answer;
 }

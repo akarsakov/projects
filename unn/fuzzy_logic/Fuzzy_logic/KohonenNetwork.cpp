@@ -4,13 +4,15 @@
 #include <algorithm>
 #include <functional>
 #include <iterator>
+#include <iostream>
 #include "KohonenNetwork.h"
 #include "utils.h"
 
 using namespace std;
 
-KohonenNetwork::KohonenNetwork(Data& d, int num_cl, float alpha_winner, float alpha_loser, float epsilon, int max_e): 
-    data(d), num_clusters(num_cl), alpha_w(alpha_winner), alpha_l(alpha_loser), eps(epsilon), max_epoch(max_e) 
+KohonenNetwork::KohonenNetwork(Data& d, KohonenNetworkParameters params): 
+    data(d), num_clusters(params.num_clusters), alpha_w(params.alpha_winner), alpha_l(params.alpha_loser), 
+    eps(params.epsilon), max_epoch(params.maxEpoch) 
 {
     if (num_clusters < 0 || alpha_w < 0.f || alpha_l < 0.f || eps < 0.f)
     {
@@ -97,6 +99,10 @@ void KohonenNetwork::trainNetwork()
 	} while (epoch_number < max_epoch && shift > eps);
 
 	filterCenters();
+
+    cout << "\tKohonen network trained!" << endl;
+    cout << "\tEpoch number: " << epoch_number << endl;
+    cout << "\tNumber of centers: " << centers.size() << endl;
 	
 	gaussWidths.resize(centers.size(), FLT_MAX);
 	b0.resize(centers.size(), 0);
