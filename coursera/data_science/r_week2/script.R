@@ -1,0 +1,17 @@
+setwd("D:/Dev/git_repos/projects/coursera/data_science/r_week2")
+print("========== Test for pollutantmean ==========")
+source("pollutantmean.R")
+print(pollutantmean("specdata", "sulfate", 1:10))
+print(pollutantmean("specdata", "nitrate", 70:72))
+print(pollutantmean("specdata", "nitrate", 23))
+
+print("============ Test for complete =============")
+source("complete.R")
+print(complete("specdata", c(2, 4, 8, 10, 12)))
+print(complete("specdata", 30:25))
+print(complete("specdata", 3))
+
+print("============ Test for corr =============")
+source("corr.R")
+cr <- corr("specdata", 400)
+print(summary(cr))
