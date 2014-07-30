@@ -26,13 +26,13 @@ rankall <- function(outcome, num = "best") {
         data <- outcome_data[outcome_data$State == state, c(2, col)]
         data <- data[complete.cases(data),]
         if (num == "best") {
-            data <- data[order(data[,2]), ]
+            data <- data[order(data[,2],data[,1]), ]
             ranks <- c(ranks, data[1,1])
         } else if (num == "worst") {
-            data <- data[order(-data[,2]), ]
+            data <- data[order(-data[,2],data[,1]), ]
             ranks <- c(ranks, data[1,1])
         } else {
-            data <- data[order(data[,2]), ]
+            data <- data[order(data[,2],data[,1]), ]
             ranks <- c(ranks, data[num,1])
         }
     }
