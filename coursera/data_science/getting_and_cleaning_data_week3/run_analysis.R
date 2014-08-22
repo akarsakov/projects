@@ -20,7 +20,7 @@ full_data_set <- cbind(train_data_x, subjects_train, train_data_y)
 full_data_set <- rbind(full_data_set, cbind(test_data_x, subjects_test, test_data_y))
 
 ## 2. extract only mean and stddev variables
-reduced_data_set <- full_data_set[, c(grep("([mM]ean|[sS]td)", names(full_data_set)), ncol(full_data_set)-1, ncol(full_data_set))]
+reduced_data_set <- full_data_set[, c(grep("(mean|std)", names(full_data_set)), ncol(full_data_set)-1, ncol(full_data_set))]
 
 ## 3. make descriptive activity names
 levels(reduced_data_set$Activity) <- activity_labels$Activity.Name
@@ -32,10 +32,6 @@ names(reduced_data_set) <- gsub("\\.", "", names(reduced_data_set))
 names(reduced_data_set) <- gsub("mean", "Mean", names(reduced_data_set))
 # std -> uppercase
 names(reduced_data_set) <- gsub("std", "Std", names(reduced_data_set))
-# angle -> uppercase
-names(reduced_data_set) <- gsub("angle", "Angle", names(reduced_data_set))
-# gravity -> uppercase
-names(reduced_data_set) <- gsub("gravity", "Gravity", names(reduced_data_set))
 # prefix 't' -> Time
 names(reduced_data_set) <- gsub("^t", "Time", names(reduced_data_set))
 # prefix 'f' -> FFT
