@@ -20,3 +20,4 @@
 ##### Remarks
 - If you are interesting how `run_analysis.R` script works feel free to inspect the code. Script contains a lot of describing comments.
 - I prefer `UpperCamelCase` naming convension for names of variables.
+- `codebook.txt` is automatically generated

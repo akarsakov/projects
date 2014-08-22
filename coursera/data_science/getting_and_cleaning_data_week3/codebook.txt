@@ -1,0 +1,326 @@
+Subject
+    Id of subject who performed the activity.
+    Integer value in [1,30]. Unique identifier.
+
+Activity
+    Activity code.
+    1. WALKING
+    2. WALKING_UPSTAIRS
+    3. WALKING_DOWNSTAIRS
+    4. SITTING
+    5. STANDING
+    6. LAYING
+
+TimeBodyAccMeanX
+    Mean value of time domain signal of the body from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+TimeBodyAccMeanY
+    Mean value of time domain signal of the body from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+TimeBodyAccMeanZ
+    Mean value of time domain signal of the body from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+TimeBodyAccStdX
+    Standard deviation value of time domain signal of the body from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+TimeBodyAccStdY
+    Standard deviation value of time domain signal of the body from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+TimeBodyAccStdZ
+    Standard deviation value of time domain signal of the body from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+TimeGravityAccMeanX
+    Mean value of time domain signal of the gravity from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+TimeGravityAccMeanY
+    Mean value of time domain signal of the gravity from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+TimeGravityAccMeanZ
+    Mean value of time domain signal of the gravity from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+TimeGravityAccStdX
+    Standard deviation value of time domain signal of the gravity from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+TimeGravityAccStdY
+    Standard deviation value of time domain signal of the gravity from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+TimeGravityAccStdZ
+    Standard deviation value of time domain signal of the gravity from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+TimeBodyAccJerkMeanX
+    Mean value of time domain signal of the Jerk signals from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+TimeBodyAccJerkMeanY
+    Mean value of time domain signal of the Jerk signals from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+TimeBodyAccJerkMeanZ
+    Mean value of time domain signal of the Jerk signals from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+TimeBodyAccJerkStdX
+    Standard deviation value of time domain signal of the Jerk signals from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+TimeBodyAccJerkStdY
+    Standard deviation value of time domain signal of the Jerk signals from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+TimeBodyAccJerkStdZ
+    Standard deviation value of time domain signal of the Jerk signals from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroMeanX
+    Mean value of time domain signal of the body from gyroscope in the x-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroMeanY
+    Mean value of time domain signal of the body from gyroscope in the y-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroMeanZ
+    Mean value of time domain signal of the body from gyroscope in the z-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroStdX
+    Standard deviation value of time domain signal of the body from gyroscope in the x-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroStdY
+    Standard deviation value of time domain signal of the body from gyroscope in the y-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroStdZ
+    Standard deviation value of time domain signal of the body from gyroscope in the z-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroJerkMeanX
+    Mean value of time domain signal of the body Jerk signals from gyroscope in the x-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroJerkMeanY
+    Mean value of time domain signal of the body Jerk signals from gyroscope in the y-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroJerkMeanZ
+    Mean value of time domain signal of the body Jerk signals from gyroscope in the z-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroJerkStdX
+    Standard deviation value of time domain signal of the body Jerk signals from gyroscope in the x-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroJerkStdY
+    Standard deviation value of time domain signal of the body Jerk signals from gyroscope in the y-axis.
+    Float value in [-1,1].
+
+TimeBodyGyroJerkStdZ
+    Standard deviation value of time domain signal of the body Jerk signals from gyroscope in the z-axis.
+    Float value in [-1,1].
+
+TimeBodyAccMagMean
+    Mean value of the magnitude of the body from accelerometer (calculated using the Euclidean norm).
+    Float value in [-1,1].
+
+TimeBodyAccMagStd
+    Standard deviation value of the magnitude from accelerometer (calculated using the Euclidean norm).
+    Float value in [-1,1].
+
+TimeGravityAccMagMean
+    Mean value of the magnitude of the gravity from accelerometer (calculated using the Euclidean norm).
+    Float value in [-1,1].
+
+TimeGravityAccMagStd
+    Standard deviation value of the magnitude of the gravity from accelerometer (calculated using the Euclidean norm).
+    Float value in [-1,1].
+
+TimeBodyAccJerkMagMean
+    Mean value of the magnitude of the Jerk signal from accelerometer.
+    Float value in [-1,1].
+
+TimeBodyAccJerkMagStd
+    Standard deviation value of the magnitude of the Jerk signal from accelerometer.
+    Float value in [-1,1].
+
+TimeBodyGyroMagMean
+    Mean value of the magnitude of the Jerk signal from gyroscope.
+    Float value in [-1,1].
+
+TimeBodyGyroMagStd
+    Standard deviation value of the magnitude of the Jerk signal from gyroscope.
+    Float value in [-1,1].
+
+TimeBodyGyroJerkMagMean
+    Mean value of the magnitude of the Jerk signal from gyroscope.
+    Float value in [-1,1].
+
+TimeBodyGyroJerkMagStd
+    Standard deviation value of the magnitude of the Jerk signal from gyroscope.
+    Float value in [-1,1].
+
+FFTBodyAccMeanX
+    Mean value of frequency domain signal of the body from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+FFTBodyAccMeanY
+    Mean value of frequency domain signal of the body from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+FFTBodyAccMeanZ
+    Mean value of frequency domain signal of the body from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+FFTBodyAccStdX
+    Standard deviation value of frequency domain signal of the body from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+FFTBodyAccStdY
+    Standard deviation value of frequency domain signal of the body from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+FFTBodyAccStdZ
+    Standard deviation value of frequency domain signal of the body from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+FFTBodyAccMeanFreqX
+    Mean value of frequency domain signal of the body from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+FFTBodyAccMeanFreqY
+    Mean value of frequency domain signal of the body from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+FFTBodyAccMeanFreqZ
+    Mean value of frequency domain signal of the body from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+FFTBodyAccJerkMeanX
+    Mean value of frequency domain signal of the Jerk signals from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+FFTBodyAccJerkMeanY
+    Mean value of frequency domain signal of the Jerk signals from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+FFTBodyAccJerkMeanZ
+    Mean value of frequency domain signal of the Jerk signals from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+FFTBodyAccJerkStdX
+    Standard deviation value of frequency domain signal of the Jerk signals from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+FFTBodyAccJerkStdY
+    Standard deviation value of frequency domain signal of the Jerk signals from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+FFTBodyAccJerkStdZ
+    Standard deviation value of frequency domain signal of the Jerk signals from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+FFTBodyAccJerkMeanFreqX
+    Standard deviation value of frequency domain signal of the Jerk signals from accelerometer in the x-axis.
+    Float value in [-1,1].
+
+FFTBodyAccJerkMeanFreqY
+    Standard deviation value of frequency domain signal of the Jerk signals from accelerometer in the y-axis.
+    Float value in [-1,1].
+
+FFTBodyAccJerkMeanFreqZ
+    Standard deviation value of frequency domain signal of the Jerk signals from accelerometer in the z-axis.
+    Float value in [-1,1].
+
+FFTBodyGyroMeanX
+    Mean value of frequency domain signal of the body from gyroscope in the x-axis.
+    Float value in [-1,1].
+
+FFTBodyGyroMeanY
+    Mean value of frequency domain signal of the body from gyroscope in the y-axis.
+    Float value in [-1,1].
+
+FFTBodyGyroMeanZ
+    Mean value of frequency domain signal of the body from gyroscope in the z-axis.
+    Float value in [-1,1].
+
+FFTBodyGyroStdX
+    Standard deviation value of frequency domain signal of the body from gyroscope in the x-axis.
+    Float value in [-1,1].
+
+FFTBodyGyroStdY
+    Standard deviation value of frequency domain signal of the body from gyroscope in the y-axis.
+    Float value in [-1,1].
+
+FFTBodyGyroStdZ
+    Standard deviation value of frequency domain signal of the body from gyroscope in the z-axis.
+    Float value in [-1,1].
+
+FFTBodyGyroMeanFreqX
+    Mean value of frequency domain signal of the body from gyroscope in the x-axis.
+    Float value in [-1,1].
+
+FFTBodyGyroMeanFreqY
+    Mean value of frequency domain signal of the body from gyroscope in the y-axis.
+    Float value in [-1,1].
+
+FFTBodyGyroMeanFreqZ
+    Mean value of frequency domain signal of the body from gyroscope in the z-axis.
+    Float value in [-1,1].
+
+FFTBodyAccMagMean
+    Mean value of the magnitude in frequency domain of the body from accelerometer (calculated using the Euclidean norm).
+    Float value in [-1,1].
+
+FFTBodyAccMagStd
+    Standard deviation value of the magnitude in frequency domain of the body from accelerometer (calculated using the Euclidean norm).
+    Float value in [-1,1].
+
+FFTBodyAccMagMeanFreq
+    Mean value of the magnitude in frequency domain of the body from accelerometer (calculated using the Euclidean norm).
+    Float value in [-1,1].
+
+FFTBodyAccJerkMagMean
+    Mean value of the magnitude in frequency domain of the Jerk signal from accelerometer.
+    Float value in [-1,1].
+
+FFTBodyBodyAccJerkMagStd
+    Standard deviation value of the magnitude in frequency domain of the Jerk signal from accelerometer.
+    Float value in [-1,1].
+
+FFTBodyBodyAccJerkMagMeanFreq
+    Mean value of the magnitude in frequency domain of the Jerk signal from accelerometer.
+    Float value in [-1,1].
+
+FFTBodyBodyGyroMagMean
+    Mean value of the magnitude in frequency domain of the body from gyroscope (calculated using the Euclidean norm).
+    Float value in [-1,1].
+
+FFTBodyBodyGyroMagStd
+    Standard deviation value of the magnitude in frequency domain of the body from gyroscope (calculated using the Euclidean norm).
+    Float value in [-1,1].
+
+FFTBodyBodyGyroMagMeanFreq
+    Mean value of the magnitude in frequency domain of the body from gyroscope (calculated using the Euclidean norm).
+    Float value in [-1,1].
+
+FFTBodyBodyGyroJerkMagMean
+    Mean value of the magnitude in frequency domain of the Jerk signal from gyroscope.
+    Float value in [-1,1].
+
+FFTBodyBodyGyroJerkMagStd
+    Standard deviation value of the magnitude in frequency domain of the Jerk signal from gyroscope.
+    Float value in [-1,1].
+
+FFTBodyBodyGyroJerkMagMeanFreq

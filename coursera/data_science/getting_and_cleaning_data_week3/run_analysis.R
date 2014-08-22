@@ -41,4 +41,4 @@ names(reduced_data_set) <- gsub("^f", "FFT", names(reduced_data_set))
 result <- aggregate(. ~ Subject + Activity, data=reduced_data_set, FUN="mean")
 
 ## write result to file
-write.table(result, file="result.txt", row.names=F)
+write.table(result, file="tidy_data.txt", row.names=F)
