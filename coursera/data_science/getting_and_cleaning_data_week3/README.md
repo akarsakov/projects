@@ -4,10 +4,6 @@
 - codebook.txt - description of each variables in resulting data set
 - README.md - this file
 
-##### How to use script:
-1. Put dataset from http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones# to working directory.
-2. Run `run_analysis.R` script.
-3. Resulting dataset will be stored in `tidy_data.txt` file.
 
 `run_analysis.R` script performs following steps:
 
@@ -16,6 +12,11 @@
 3. Add descriptive activity names to name the activities and appropriately labels for variables. 
 4. Creates tidy data set with the average of each variable for each activity and each subject. 
 
+##### How to use script:
+1. Download dataset from http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones# and unzip it to working directory.
+2. Run `run_analysis.R` script.
+3. Resulting dataset will be stored in `tidy_data.txt` file.
+
 ##### Remarks
-- If you are interested how `run_analysis.R` script works feel free to inspect the code. Script contains a lot of describing comments.
+- If you are interesting how `run_analysis.R` script works feel free to inspect the code. Script contains a lot of describing comments.
 - I prefer `UpperCamelCase` naming convension for names of variables.
