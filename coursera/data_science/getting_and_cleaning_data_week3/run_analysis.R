@@ -28,6 +28,8 @@ levels(reduced_data_set$Activity) <- activity_labels$Activity.Name
 ## 4. make descriptive variable names
 # remove dots
 names(reduced_data_set) <- gsub("\\.", "", names(reduced_data_set))
+# remove repeats
+names(reduced_data_set) <- gsub("BodyBody", "Body", names(reduced_data_set))
 # mean -> uppercase
 names(reduced_data_set) <- gsub("mean", "Mean", names(reduced_data_set))
 # std -> uppercase
