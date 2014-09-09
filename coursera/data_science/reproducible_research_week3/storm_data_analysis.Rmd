@@ -5,4 +5,12 @@ Storm data analysis
 
 ## Loading and Processing the Raw Data
 
+First, I downloaded .CSV from Coursera site, saved it in work directory and loaded for analysis. This dataset cames from U.S. National Oceanic and Atmospheric Administration's (NOAA) storm database. This database tracks characteristics of major storms and weather events in the United States, including when and where they occur, as well as estimates of any fatalities, injuries, and property damage. The events in the database start in the year 1950 and end in November 2011.
+
+```{r download_data, cache=TRUE}
+download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2", "repdata-data-StormData.csv.bz2")
+con <- bzfile("repdata-data-StormData.csv.bz2")
+storm_data <- read.csv(con)
+```
+
 ## Results
