@@ -3,6 +3,9 @@
 
 using namespace std;
 
+namespace bio
+{
+
 string number2pattern(int number, int k)
 {
     string pattern;
@@ -50,3 +53,5 @@ string operator*(const kMerIterator& it)
 {
     return number2pattern(it.count, it.k);
 }
+
+} /* bio */

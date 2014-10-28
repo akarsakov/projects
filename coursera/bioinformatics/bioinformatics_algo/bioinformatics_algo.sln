@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Express 2012 for Windows Desktop
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week1_task1", "week1_task1\week1_task1.vcxproj", "{1F3FD892-8DC3-4072-B31F-EF9BB697DF3A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9FDF2FFB-6664-41AF-98D5-8870892A45B5} = {9FDF2FFB-6664-41AF-98D5-8870892A45B5}
@@ -67,6 +67,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week1_cs_freq_array", "week
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week1_cs_neighbors", "week1_cs_neighbors\week1_cs_neighbors.vcxproj", "{DEADDD84-386D-413D-A7DD-3435EBBF1FEE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week2_task1", "week2_task1\week2_task1.vcxproj", "{817B604F-1BA8-440A-8911-6CEA39FDA147}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -129,6 +131,10 @@ Global
 		{DEADDD84-386D-413D-A7DD-3435EBBF1FEE}.Debug|Win32.Build.0 = Debug|Win32
 		{DEADDD84-386D-413D-A7DD-3435EBBF1FEE}.Release|Win32.ActiveCfg = Release|Win32
 		{DEADDD84-386D-413D-A7DD-3435EBBF1FEE}.Release|Win32.Build.0 = Release|Win32
+		{817B604F-1BA8-440A-8911-6CEA39FDA147}.Debug|Win32.ActiveCfg = Debug|Win32
+		{817B604F-1BA8-440A-8911-6CEA39FDA147}.Debug|Win32.Build.0 = Debug|Win32
+		{817B604F-1BA8-440A-8911-6CEA39FDA147}.Release|Win32.ActiveCfg = Release|Win32
+		{817B604F-1BA8-440A-8911-6CEA39FDA147}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,7 +3,7 @@
 #include <string_processing.h>
 
 using namespace std;
-using namespace week1;
+using namespace bio::week1;
 
 int main()
 {

@@ -5,9 +5,12 @@
 #include <set>
 #include <vector>
 
+namespace bio
+{
+
 int HammingDistance(std::string a, std::string b);
 
-inline string suffix(string str)
+inline std::string suffix(std::string str)
 {
     return str.substr(1);
 }
@@ -26,5 +29,7 @@ namespace week1
 
     std::vector<int> ComputeFrequencies(std::string text, int k);
 } /* week1 */
+
+} /* bio */
 
 #endif /* STRING_PROCESSING */

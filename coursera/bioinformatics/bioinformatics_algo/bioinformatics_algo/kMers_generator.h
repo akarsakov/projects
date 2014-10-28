@@ -4,6 +4,9 @@
 #include <string>
 #include <math.h>
 
+namespace bio
+{
+
 std::string number2pattern(int number, int k);
 int pattern2number(std::string pattern);
 
@@ -33,5 +36,7 @@ public:
     kMerIterator begin() { return kMerIterator(0, k); };
     kMerIterator end() { return kMerIterator((int) pow(4, k), k); };
 };
+
+} /* bio */
 
 #endif /* KMERS_GENERATOR */

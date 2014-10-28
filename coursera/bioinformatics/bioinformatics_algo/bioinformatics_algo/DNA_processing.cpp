@@ -1,15 +1,19 @@
 #include "DNA_processing.h"
 #include "string_processing.h"
 
-using namespace std;
+
 
 static char nucl_map[4] = { 'A', 'C', 'G', 'T' };
-inline char int2nucl(int n)
+
+using namespace std;
+using namespace bio;
+
+inline char bio::int2nucl(int n)
 {
     return nucl_map[n];
 }
 
-string rev_complement(string DNA)
+string bio::rev_complement(string DNA)
 {
     string result;
     for (auto rit=DNA.rbegin(); rit!=DNA.rend(); rit++)
@@ -28,7 +32,7 @@ static void recursiveGenerate(vector<string>& kmers, string current, int k)
     }
 }
 
-vector<string> generateAllKMers(int k)
+vector<string> bio::generateAllKMers(int k)
 {
     string init;
     vector<string> kmers;
@@ -36,6 +40,8 @@ vector<string> generateAllKMers(int k)
     return kmers;
 }
 
+namespace bio
+{
 namespace week1
 {
 
@@ -90,7 +96,7 @@ set<string> ImmediateNeighbors(string pattern)
     set<string> neighborhood;
     neighborhood.insert(pattern);
 
-    for (int i=0; i<pattern.size(); i++)
+    for (size_t i=0; i<pattern.size(); i++)
     {
         int cur_nucl = nucl2int(pattern[i]);
         for (int j=0; j<3; j++)
@@ -134,3 +140,5 @@ set<string> Neighbors(string pattern, int d)
 }
 
 } /* week1 */
+
+} /* bio */

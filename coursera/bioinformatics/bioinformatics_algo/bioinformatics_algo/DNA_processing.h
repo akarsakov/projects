@@ -5,6 +5,9 @@
 #include <set>
 #include <vector>
 
+namespace bio
+{
+
 inline bool isDNA(std::string DNA_string)
 {
     std::size_t pos = DNA_string.find_first_not_of("ACGT");
@@ -48,5 +51,7 @@ namespace week1
     std::set<std::string> ImmediateNeighbors(std::string pattern);
     std::set<std::string> Neighbors(std::string pattern, int d);
 } /* week1 */
+
+} /* bio */
 
 #endif /* DNA_PROCESSING */

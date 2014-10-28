@@ -4,7 +4,7 @@
 #include <DNA_processing.h>
 
 using namespace std;
-using namespace week1;
+using namespace bio::week1;
 
 int main()
 {
@@ -25,7 +25,7 @@ int main()
         {
             int min_skew = *min_element(skew.begin(), skew.end());
 
-            for (int i=0; i<skew.size(); i++)
+            for (size_t i=0; i<skew.size(); i++)
                 if (skew[i] == min_skew)
                     cout << i << " ";
             cout << endl;

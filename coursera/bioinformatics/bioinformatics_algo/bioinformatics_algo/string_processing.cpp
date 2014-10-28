@@ -3,9 +3,11 @@
 #include <vector>
 #include "DNA_processing.h"
 #include "kMers_generator.h"
-using namespace std;
 
-int HammingDistance(string a, string b)
+using namespace std;
+using namespace bio;
+
+int bio::HammingDistance(string a, string b)
 {
     if (a.size() != b.size())
         return -1;
@@ -17,6 +19,8 @@ int HammingDistance(string a, string b)
     return distance;
 }
 
+namespace bio
+{
 namespace week1
 {
 
@@ -174,3 +178,5 @@ vector<int> ComputeFrequencies(string text, int k)
 }
 
 } /* week1 */
+
+} /* bio */

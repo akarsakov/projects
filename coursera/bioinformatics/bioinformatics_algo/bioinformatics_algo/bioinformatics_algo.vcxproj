@@ -71,11 +71,13 @@
   <ItemGroup>
     <ClInclude Include="DNA_processing.h" />
     <ClInclude Include="kMers_generator.h" />
+    <ClInclude Include="RNA_processing.h" />
     <ClInclude Include="string_processing.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DNA_processing.cpp" />
     <ClCompile Include="kMers_generator.cpp" />
+    <ClCompile Include="RNA_processing.cpp" />
     <ClCompile Include="string_processing.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

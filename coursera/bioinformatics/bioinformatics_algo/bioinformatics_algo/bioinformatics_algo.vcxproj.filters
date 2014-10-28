@@ -24,6 +24,9 @@
     <ClInclude Include="kMers_generator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RNA_processing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="string_processing.cpp">
@@ -33,6 +36,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="kMers_generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RNA_processing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

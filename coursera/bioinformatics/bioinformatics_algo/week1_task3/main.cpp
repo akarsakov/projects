@@ -3,6 +3,7 @@
 #include <DNA_processing.h>
 
 using namespace std;
+using namespace bio;
 
 int main()
 {

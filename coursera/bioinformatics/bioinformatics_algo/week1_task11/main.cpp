@@ -4,7 +4,8 @@
 #include <kMers_generator.h>
 
 using namespace std;
-using namespace week1;
+using namespace bio;
+using namespace bio::week1;
 
 int main()
 {

@@ -4,8 +4,10 @@
 #include <kMers_generator.h>
 #include <DNA_processing.h>
 #include <InfInt.h>
+
 using namespace std;
-using namespace week1;
+using namespace bio;
+using namespace bio::week1;
 
 InfInt pattern2number_long(string pattern)
 {
