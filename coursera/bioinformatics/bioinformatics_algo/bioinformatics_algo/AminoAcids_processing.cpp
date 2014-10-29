@@ -20,7 +20,7 @@ char bio::codon2AA(string codon)
 string bio::RNA2AA(string RNA)
 {
     string AA_string = "";
-    for (int i=0; i<RNA.size() - 2; i+=3)
+    for (size_t i=0; i<RNA.size() - 2; i+=3)
     {
         string codon = RNA.substr(i, 3);
         char AA = codon2AA(codon);
