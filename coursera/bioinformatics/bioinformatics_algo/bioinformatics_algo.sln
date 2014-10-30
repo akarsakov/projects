@@ -82,6 +82,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week2_Bacillus_brevis", "we
 		{9FDF2FFB-6664-41AF-98D5-8870892A45B5} = {9FDF2FFB-6664-41AF-98D5-8870892A45B5}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week2_task3", "week2_task3\week2_task3.vcxproj", "{4D08B02C-D53B-4B8A-852C-9F0F381EAF17}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9FDF2FFB-6664-41AF-98D5-8870892A45B5} = {9FDF2FFB-6664-41AF-98D5-8870892A45B5}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -156,6 +161,10 @@ Global
 		{0CDCC3BD-F6CE-4CD5-93BE-FF6DC0AAD669}.Debug|Win32.Build.0 = Debug|Win32
 		{0CDCC3BD-F6CE-4CD5-93BE-FF6DC0AAD669}.Release|Win32.ActiveCfg = Release|Win32
 		{0CDCC3BD-F6CE-4CD5-93BE-FF6DC0AAD669}.Release|Win32.Build.0 = Release|Win32
+		{4D08B02C-D53B-4B8A-852C-9F0F381EAF17}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4D08B02C-D53B-4B8A-852C-9F0F381EAF17}.Debug|Win32.Build.0 = Debug|Win32
+		{4D08B02C-D53B-4B8A-852C-9F0F381EAF17}.Release|Win32.ActiveCfg = Release|Win32
+		{4D08B02C-D53B-4B8A-852C-9F0F381EAF17}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
