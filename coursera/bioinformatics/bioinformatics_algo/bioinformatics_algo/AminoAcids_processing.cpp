@@ -59,6 +59,49 @@ int bio::getPeptideMass(string peptide)
     return mass;
 }
 
+bool bio::isEqualSpectrums(vector<int> a, vector<int> b)
+{
+    if (a.size() != b.size())
+        return false;
+
+    return equal(a.begin(), a.end(), b.begin());
+}
+
+bool bio::isConsistentSpectrums(vector<int> big, vector<int> small)
+{
+    return includes(big.begin(), big.end(), small.begin(), small.end());
+}
+
+string bio::peptideToSpectrumString(string peptide)
+{
+    string spectrumString;
+    for (size_t i=0; i<peptide.size(); i++)
+    {
+        if (i == 0)
+            spectrumString += to_string(getMoleculeMass(peptide[i]));
+        else
+            spectrumString += "-" + to_string(getMoleculeMass(peptide[i]));
+    }
+    return spectrumString;
+}
+
+static vector<string> expandPeptides(vector<string> peptides)
+{
+    static char acidsToExpand[] = { 'G', 'A', 'S', 'P', 'V', 'T', 'C', 'I', 'N', 'D', 'K', 'E', 'M', 'H', 'F', 'R', 'Y', 'W' };
+    static int acidsSize = sizeof(acidsToExpand) / sizeof(char);
+    vector<string> expanded;
+
+    for (auto it=peptides.begin(); it!=peptides.end(); it++)
+    {
+        for (int i=0; i<acidsSize; i++)
+        {
+            expanded.push_back(*it + acidsToExpand[i]);
+        }
+    }
+
+    return expanded;
+}
+
 namespace bio
 {
 namespace week2
@@ -100,6 +143,44 @@ vector<int> getMassesVector()
     sort(masses.begin(), masses.end());
     masses.erase( unique( masses.begin(), masses.end() ), masses.end() );
     return masses;
+}
+
+vector<string> cyclopeptideSequencing(vector<int> spectrum)
+{
+    vector<string> result;
+
+    vector<string> peptides;
+    peptides.push_back("");
+
+    int parentMass = *max_element(spectrum.begin(), spectrum.end());
+
+    while (!peptides.empty())
+    {
+        vector<string> exPeptides = expandPeptides(peptides);
+        peptides.clear();
+
+        for (auto it=exPeptides.begin(); it!=exPeptides.end(); it++)
+        {
+            if (getPeptideMass(*it) == parentMass)
+            {
+                if (isEqualSpectrums(getCyclospectrum(*it), spectrum))
+                {
+                    result.push_back(*it);
+                }
+                continue;
+            }
+            else 
+            {
+                vector<int> curSpectrum = getCyclospectrum(*it);
+                if (!isConsistentSpectrums(spectrum, curSpectrum))
+                    continue;
+            }
+
+            peptides.push_back(*it);
+        }
+    }
+
+    return result;
 }
 
 } /* week2 */
