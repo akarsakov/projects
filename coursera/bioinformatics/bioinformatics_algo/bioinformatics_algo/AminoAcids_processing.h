@@ -15,6 +15,7 @@ int getPeptideMass(std::string);
 namespace week2
 {
     std::vector<int> getCyclospectrum(std::string peptide);
+    std::vector<int> getMassesVector();
 
 } /* week2 */
 

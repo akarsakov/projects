@@ -10,7 +10,7 @@ static char int2AA[] = { 'K', 'N', 'K', 'N', 'T', 'T', 'T', 'T', 'R', 'S', 'R', 
                          '*', 'Y', '*', 'Y', 'S', 'S', 'S', 'S', '*', 'C', 'W', 'C', 'L', 'F', 'L', 'F' };
 
 static int moleculeMasses[] = { 71, 0, 103, 115, 129, 147, 57, 137, 113, 0, 128, 113, 131, 114, 0, 97, 128,
-                                156, 87, 101, 0, 99, 186, 0, 163, 0};
+                                156, 87, 101, 0, 99, 186, 0, 163, 0 };
 
 char bio::codon2AA(string codon)
 {
@@ -86,6 +86,20 @@ vector<int> getCyclospectrum(string peptide)
     sort(result.begin(), result.end());
 
     return result;
+}
+
+vector<int> getMassesVector()
+{
+    vector<int> masses(moleculeMasses, moleculeMasses + sizeof(moleculeMasses) / sizeof(int));
+    auto end = remove_if(masses.begin(), masses.end(), 
+                    [](const int& el) -> bool 
+                    {
+                        return el == 0;
+                    });
+    masses.erase(end, masses.end());
+    sort(masses.begin(), masses.end());
+    masses.erase( unique( masses.begin(), masses.end() ), masses.end() );
+    return masses;
 }
 
 } /* week2 */
