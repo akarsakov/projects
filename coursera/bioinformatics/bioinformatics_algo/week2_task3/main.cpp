@@ -2,8 +2,8 @@
 #include <fstream>
 #include <vector>
 #include <AminoAcids_processing.h>
-#include <RNA_processing.h>
-#include <DNA_processing.h>
+#include <Spectrum_processing.h>
+
 
 using namespace std;
 using namespace bio;

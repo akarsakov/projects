@@ -4,7 +4,6 @@
 #include <iomanip>
 #include <Spectrum_processing.h>
 
-
 using namespace std;
 using namespace bio;
 using namespace bio::week2;
@@ -17,6 +16,10 @@ int main()
     if (input.is_open())
     {
         vector<int> spectrum;
+        string peptide;
+
+        input >> peptide;
+
         while (!input.eof())
         {
             int num;
@@ -24,12 +27,7 @@ int main()
             spectrum.push_back(num);
         }
 
-        vector<string> result = cyclopeptideSequencing(spectrum);
-        for (auto it=result.begin(); it!=result.end(); it++)
-        {
-            cout << peptideToSpectrumString(*it) << " ";
-        }
-        cout << endl;
+        cout << "Score: " << score(peptide, spectrum) << endl;       
         
         input.close();
     }
