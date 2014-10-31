@@ -11,8 +11,10 @@ bool isConsistentSpectrums(std::vector<int> a, std::vector<int> b);
 
 std::string peptideToSpectrumString(std::string peptide);
 std::vector<int> getCyclospectrum(std::string peptide);
+std::vector<int> getLinearSpectrum(std::string peptide);
 
 int score(std::string peptide, std::vector<int> spectrum);
+int linearScore(std::string peptide, std::vector<int> spectrum);
 
 namespace week2
 {

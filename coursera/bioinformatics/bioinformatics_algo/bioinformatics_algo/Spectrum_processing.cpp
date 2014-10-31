@@ -41,6 +41,18 @@ vector<int> bio::getCyclospectrum(string peptide)
     return result;
 }
 
+vector<int> bio::getLinearSpectrum(string peptide)
+{
+    vector<int> linearSpectrum;
+    vector<int> prefixMass(peptide.size() + 1, 0);
+
+    for (size_t i=0; i<peptide.size(); i++)
+    {
+        prefixMass[i
+    }
+
+}
+
 string bio::peptideToSpectrumString(string peptide)
 {
     string spectrumString;
@@ -62,6 +74,11 @@ int bio::score(string peptide, vector<int> spectrum)
                      back_inserter(intersection));
 
     return intersection.size();
+}
+
+int bio::linearScore(string peptide, vector<int> spectrum)
+{
+
 }
 
 static vector<string> expandPeptides(vector<string> peptides)
