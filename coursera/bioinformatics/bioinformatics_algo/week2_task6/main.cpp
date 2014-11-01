@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <iomanip>
 #include <Spectrum_processing.h>
 
 using namespace std;
@@ -16,20 +15,21 @@ int main()
     if (input.is_open())
     {
         vector<int> spectrum;
-        string peptide;
+        int N;
 
-        input >> peptide;
+        input >> N;
 
         while (!input.eof())
         {
-            int num;
-            input >> num;
-            spectrum.push_back(num);
+            int temp;
+            input >> temp;
+            spectrum.push_back(temp);
         }
-
-        cout << "Score: " << score(peptide, spectrum) << endl;
-        cout << "Linear score: " << linearScore(peptide, spectrum) << endl;
         
+        vector<string> leaders = leaderBoardCyclopeptideSequincing2(spectrum, N);
+        for (auto it=leaders.begin(); it!=leaders.end(); it++)
+            cout << peptideToSpectrumString(*it) << " ";
+                
         input.close();
     }
     else
