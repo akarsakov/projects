@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 #include <Spectrum_processing.h>
 
 using namespace std;
@@ -15,9 +16,6 @@ int main()
     if (input.is_open())
     {
         vector<int> spectrum;
-        int N;
-
-        input >> N;
 
         while (!input.eof())
         {
@@ -25,11 +23,13 @@ int main()
             input >> temp;
             spectrum.push_back(temp);
         }
-        
-        vector<vector<int>> leaders = leaderBoardCyclopeptideSequincingExtended(spectrum, N);
 
-        for (auto it=leaders.begin(); it!=leaders.end(); it++)
-            cout << massesToSpectrumString(*it) << " ";
+        sort(spectrum.begin(), spectrum.end());
+        
+        vector<int> convolution = spectrumConvolution(spectrum);
+
+        for (auto it=convolution.begin(); it!=convolution.end(); it++)
+            cout << *it << " ";
                 
         input.close();
     }
