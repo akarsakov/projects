@@ -52,6 +52,17 @@ namespace week1
     std::set<std::string> Neighbors(std::string pattern, int d);
 } /* week1 */
 
+namespace week3
+{
+    std::set<std::string> motifEnumeration(const std::vector<std::string>& DNA, int k, int d);
+    int distanceDNA2Pattern(const std::vector<std::string>& DNA, std::string pattern);
+    std::string medianString(const std::vector<std::string>& DNA, int k);
+
+    double kMerProbability(const std::vector<std::vector<double>>& profile, std::string pattern);
+    std::vector<std::string> greedyMotifSearch(const std::vector<std::string>& DNA, int k, int t);
+
+} /* week3 */
+
 } /* bio */
 
 #endif /* DNA_PROCESSING */

@@ -9,6 +9,7 @@ namespace bio
 {
 
 int HammingDistance(std::string a, std::string b);
+int distanceText2Pattern(std::string text, std::string pattern);
 
 inline std::string suffix(std::string str)
 {

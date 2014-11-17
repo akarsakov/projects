@@ -21,6 +21,18 @@ int bio::HammingDistance(string a, string b)
 
 namespace bio
 {
+
+int distanceText2Pattern(string text, string pattern)
+{
+    int distance = INT_MAX;
+    size_t k = pattern.size();
+    for (size_t i = 0; i<text.size() - k + 1; i++)
+    {
+        distance = std::min(distance, HammingDistance(pattern, text.substr(i, k)));
+    }
+    return distance;
+}
+
 namespace week1
 {
 
@@ -122,12 +134,7 @@ set<string> ApproximateFrequentWordsWithReverse(string text, int k, int d)
         {
             result.insert(pattern);
         }
-        if (pattern == "AGCGCCGCT")
-        {
-            printf("count = %d\n", count);
-        }
     }
-    printf("max count = %d\n", max_count);
     return result;
 }
 

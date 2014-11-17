@@ -1,12 +1,10 @@
 #include "DNA_processing.h"
 #include "string_processing.h"
 
-
-
-static char nucl_map[4] = { 'A', 'C', 'G', 'T' };
-
 using namespace std;
 using namespace bio;
+
+static char nucl_map[4] = { 'A', 'C', 'G', 'T' };
 
 inline char bio::int2nucl(int n)
 {
@@ -38,6 +36,17 @@ vector<string> bio::generateAllKMers(int k)
     vector<string> kmers;
     recursiveGenerate(kmers, init, k);
     return kmers;
+}
+
+static bool findWithMismatches(string text, string pattern, int d)
+{
+    size_t k = pattern.size();
+    for (size_t i=0; i<text.size() - k + 1; i++) {
+        int dist = HammingDistance(text.substr(i, k), pattern);
+        if (dist <= d)
+            return true;
+    }
+    return false;
 }
 
 namespace bio
@@ -140,5 +149,85 @@ set<string> Neighbors(string pattern, int d)
 }
 
 } /* week1 */
+
+namespace week3
+{
+set<string> motifEnumeration(const vector<string>& DNA, int k, int d)
+{
+    set<string> patterns;
+    vector<string> kMers = generateAllKMers(k);
+
+    for (auto kMer : kMers)
+    {
+        bool allFound = true;
+        for (size_t j=0; j<DNA.size(); j++) {
+            if (!findWithMismatches(DNA[j], kMer, d)) {
+                allFound = false;
+                break;
+            }
+        }
+
+        if (allFound)
+            patterns.insert(kMer);
+    }
+    
+    return patterns;
+}
+
+int distanceDNA2Pattern(const vector<string>& DNA, string pattern)
+{
+    int dist = 0;
+    for (auto text : DNA)
+    {
+        dist += distanceText2Pattern(text, pattern);
+    }
+    return dist;
+}
+
+string medianString(const vector<string>& DNA, int k)
+{
+    int dist = INT_MAX;
+    string median;
+    vector<string> kMers = generateAllKMers(k);
+
+    for (auto kMer : kMers) 
+    {
+        int curDist = distanceDNA2Pattern(DNA, kMer);
+        if (dist > curDist)
+        {
+            dist = curDist;
+            median = kMer;
+        }
+    }
+    return median;
+}
+
+double kMerProbability(const vector<vector<double>>& profile, string pattern)
+{
+    double probability = 1.0;
+
+    for (size_t i=0; i<pattern.size(); i++)
+    {
+        probability *= profile[nucl2int(pattern[i])][i];
+    }
+    return probability;
+}
+
+vector<string> greedyMotifSearch(const vector<string>& DNA, int k, int t)
+{
+    vector<string> bestMotifs;
+
+    for (auto text : DNA) {
+        bestMotifs.push_back(text.substr(0, k));
+    }
+
+    for (size_t i=0; i<DNA[0].size() - k + 1; i++)
+    {
+
+    }
+
+}
+
+} /* week3 */
 
 } /* bio */
