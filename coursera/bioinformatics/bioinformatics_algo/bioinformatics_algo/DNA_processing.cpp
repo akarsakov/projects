@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "DNA_processing.h"
 #include "string_processing.h"
 
@@ -47,6 +49,78 @@ static bool findWithMismatches(string text, string pattern, int d)
             return true;
     }
     return false;
+}
+
+double bio::kMerProbability(const vector<vector<double>>& profile, string pattern)
+{
+    double probability = 1.0;
+
+    for (size_t i=0; i<pattern.size(); i++)
+    {
+        probability *= profile[nucl2int(pattern[i])][i];
+    }
+    return probability;
+}
+
+vector<vector<double>> bio::ProfileGenerator::generateProfile(const vector<string>& motif)
+{
+    vector<vector<double>> profile;
+	size_t k = motif[0].size();
+	profile.resize(4);
+
+    for (int i=0; i<4; i++)
+        profile[i].resize(k, 0.0);
+	
+	for (size_t i=0; i<k; i++)
+	{
+		for (size_t j=0; j<motif.size(); j++)
+		{
+            profile[nucl2int(motif[j][i])][i] += 1.0/((int) motif.size());
+		}
+	}
+	return profile;
+}
+
+vector<vector<double>> bio::LaplaceProfileGenerator::generateProfile(const vector<string>& motif)
+{
+    vector<vector<double>> profile;
+	size_t k = motif[0].size();
+	profile.resize(4);
+
+    for (int i=0; i<4; i++)
+        profile[i].resize(k, 1.0);
+	
+	for (size_t i=0; i<k; i++)
+	{
+		for (size_t j=0; j<motif.size(); j++)
+		{
+            profile[nucl2int(motif[j][i])][i] += 1.0/(2 * motif.size());
+		}
+	}
+	return profile;
+}
+
+string bio::getConsensus(const vector<vector<double>>& profile)
+{
+    size_t k = profile[0].size();
+    string consensus;
+
+    for (size_t i=0; i<k; i++)
+    {
+        int max_nuc_index;
+        double max_prob = 0.;
+
+        for (int j=0; j<4; j++)
+        {
+            if (profile[j][i] > max_prob) 
+            {
+                max_prob = profile[j][i];
+                max_nuc_index = j;
+            }
+        }
+        consensus += int2nucl(max_nuc_index);
+    }
+    return consensus;
 }
 
 namespace bio
@@ -202,30 +276,63 @@ string medianString(const vector<string>& DNA, int k)
     return median;
 }
 
-double kMerProbability(const vector<vector<double>>& profile, string pattern)
+int motifScore(const vector<string>& motif)
 {
-    double probability = 1.0;
-
-    for (size_t i=0; i<pattern.size(); i++)
-    {
-        probability *= profile[nucl2int(pattern[i])][i];
-    }
-    return probability;
+    int score = 0;
+	for (size_t i=0; i<motif[0].size(); i++)
+	{
+		vector<int> nucl_counter;
+		nucl_counter.resize(4, 0);
+		for (size_t j=0; j<motif.size(); j++)
+		{
+            nucl_counter[nucl2int(motif[j][i])] += 1;
+		}
+        int max_nucl = *max_element(nucl_counter.begin(), nucl_counter.end()); 
+		score += motif.size() - max_nucl;
+	}
+	return score;
 }
 
-vector<string> greedyMotifSearch(const vector<string>& DNA, int k, int t)
+vector<string> greedyMotifSearch(const vector<string>& DNA, int k, ProfileGenerator* generator)
 {
-    vector<string> bestMotifs;
-
+    vector<string> bestMotif;
+    size_t t = DNA.size();
     for (auto text : DNA) {
-        bestMotifs.push_back(text.substr(0, k));
+        bestMotif.push_back(text.substr(0, k));
     }
 
     for (size_t i=0; i<DNA[0].size() - k + 1; i++)
     {
+        vector<string> motif;
+        motif.push_back(DNA[0].substr(i, k));
 
+        for (size_t j=1; j<t; j++)
+        {
+            vector<vector<double>> profile = generator->generateProfile(motif);
+            double maxProb = 0.;
+            string bestkMer = DNA[j].substr(0, k);
+
+            for (size_t s=0; s < DNA[j].size() - k + 1; s++)
+            {
+                string curkMer = DNA[j].substr(s, k);
+                double curProb = kMerProbability(profile, curkMer);
+
+                if (curProb > maxProb)
+                {
+                    maxProb = curProb;
+                    bestkMer = curkMer;
+                }
+            }
+
+            motif.push_back(bestkMer);
+        }
+
+        if (motifScore(bestMotif) > motifScore(motif))
+        {
+            bestMotif = motif;
+        }
     }
-
+    return bestMotif;
 }
 
 } /* week3 */

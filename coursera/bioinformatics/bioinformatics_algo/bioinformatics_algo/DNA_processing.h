@@ -43,6 +43,20 @@ char int2nucl(int n);
 std::string rev_complement(std::string DNA);
 std::vector<std::string> generateAllKMers(int k);
 
+double kMerProbability(const std::vector<std::vector<double>>& profile, std::string pattern);
+std::string getConsensus(const std::vector<std::vector<double>>& profile);
+
+class ProfileGenerator
+{
+public:
+    virtual std::vector<std::vector<double>> generateProfile(const std::vector<std::string>& motif);
+};
+
+class LaplaceProfileGenerator : public ProfileGenerator
+{
+    virtual std::vector<std::vector<double>> generateProfile(const std::vector<std::string>& motif);
+};
+
 namespace week1
 {
     std::set<std::string> FindClumps(std::string DNA, int k, int L, int t);
@@ -58,8 +72,9 @@ namespace week3
     int distanceDNA2Pattern(const std::vector<std::string>& DNA, std::string pattern);
     std::string medianString(const std::vector<std::string>& DNA, int k);
 
-    double kMerProbability(const std::vector<std::vector<double>>& profile, std::string pattern);
-    std::vector<std::string> greedyMotifSearch(const std::vector<std::string>& DNA, int k, int t);
+    std::vector<std::string> greedyMotifSearch(const std::vector<std::string>& DNA, int k, ProfileGenerator* generator = new ProfileGenerator());
+
+    int motifScore(const std::vector<std::string>& motif);
 
 } /* week3 */
 
