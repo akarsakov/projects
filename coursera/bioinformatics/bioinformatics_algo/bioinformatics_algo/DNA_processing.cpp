@@ -2,6 +2,7 @@
 
 #include "DNA_processing.h"
 #include "string_processing.h"
+#include "GibbsSampler.h"
 
 using namespace std;
 using namespace bio;
@@ -88,7 +89,7 @@ vector<vector<double>> bio::LaplaceProfileGenerator::generateProfile(const vecto
 	profile.resize(4);
 
     for (int i=0; i<4; i++)
-        profile[i].resize(k, 1.0);
+        profile[i].resize(k, 1.0/(2 * motif.size()));
 	
 	for (size_t i=0; i<k; i++)
 	{
@@ -121,6 +122,122 @@ string bio::getConsensus(const vector<vector<double>>& profile)
         consensus += int2nucl(max_nuc_index);
     }
     return consensus;
+}
+
+int bio::motifScore(const vector<string>& motif)
+{
+    int score = 0;
+	for (size_t i=0; i<motif[0].size(); i++)
+	{
+		vector<int> nucl_counter;
+		nucl_counter.resize(4, 0);
+		for (size_t j=0; j<motif.size(); j++)
+		{
+            nucl_counter[nucl2int(motif[j][i])] += 1;
+		}
+        int max_nucl = *max_element(nucl_counter.begin(), nucl_counter.end()); 
+		score += motif.size() - max_nucl;
+	}
+	return score;
+}
+
+vector<string> bio::generateMotif(const vector<string>& DNA, const vector<vector<double>>& profile)
+{
+    size_t k = profile[0].size();
+    size_t t = DNA.size();
+    vector<string> motif;
+
+    for (size_t i=0; i<t; i++)
+    {
+        double max_prob = 0.0;
+	    string best_kMer = DNA[i].substr(0,k);
+
+	    for (size_t s = 0; s < DNA[i].size() - k + 1; s++)
+	    {
+            string cur_kMer = DNA[i].substr(s, k);
+            double cur_prob = kMerProbability(profile, cur_kMer);
+		    if (cur_prob > max_prob)
+		    {
+			    max_prob = cur_prob;
+			    best_kMer = cur_kMer;
+		    }
+	    }
+        motif.push_back(best_kMer);
+    }
+    return motif;
+}
+
+static vector<string> randomGenerateMotif(const vector<string>& DNA, int k, ProfileGenerator* generator)
+{
+    size_t size = DNA[0].size();
+    size_t t = DNA.size();
+    vector<string> motif;
+
+    for (size_t j=0; j<t; j++)
+    {
+        int start = rand() % (size - k + 1);
+        motif.push_back(DNA[j].substr(start, k));
+    }
+    vector<string> bestMotif = motif;
+    int bestScore = bio::motifScore(bestMotif);
+
+    while (true)
+    {
+        vector<vector<double>> profile = generator->generateProfile(motif);
+        motif = bio::generateMotif(DNA, profile);
+        int current_score = bio::motifScore(motif);
+        if (current_score < bestScore)
+        {
+            bestMotif = motif;
+            bestScore = current_score;
+        }
+        else
+        {
+            return bestMotif;
+        }
+    }
+}
+
+static vector<string> GibbsGenerateMotif(const vector<string>& DNA, int k, int N, ProfileGenerator* generator)
+{
+    int size = DNA[0].size();
+    const size_t t = DNA.size();
+    vector<string> bestMotif;
+    for (size_t j=0; j<t; j++)
+    {
+        int start = rand() % (size - k + 1);
+        bestMotif.push_back(DNA[j].substr(start, k));
+    }
+    int bestScore = bio::motifScore(bestMotif);
+
+    for (int j=0; j<N; j++)
+    {
+        int motif_index = rand() % t;
+        vector<string> curMotif = bestMotif;
+        curMotif.erase(curMotif.begin() + motif_index);
+
+        vector<vector<double>> curProfile = generator->generateProfile(curMotif);
+
+        vector<double> probs;
+        for (size_t s=0; s<DNA[motif_index].size() - k + 1; s++)
+        {
+            probs.push_back(bio::kMerProbability(curProfile, DNA[motif_index].substr(s, k)));
+        }
+
+        GibbsSampler sampler(probs);
+        int kMerIndex = sampler.sample();
+        string kMer = DNA[motif_index].substr(kMerIndex, k);
+
+        curMotif.insert(curMotif.begin() + motif_index, kMer);
+        int curScore = bio::motifScore(curMotif);
+
+        if (curScore < bestScore)
+        {
+            bestScore = curScore;
+            bestMotif = curMotif;
+        }
+    }
+    return bestMotif;
 }
 
 namespace bio
@@ -276,23 +393,6 @@ string medianString(const vector<string>& DNA, int k)
     return median;
 }
 
-int motifScore(const vector<string>& motif)
-{
-    int score = 0;
-	for (size_t i=0; i<motif[0].size(); i++)
-	{
-		vector<int> nucl_counter;
-		nucl_counter.resize(4, 0);
-		for (size_t j=0; j<motif.size(); j++)
-		{
-            nucl_counter[nucl2int(motif[j][i])] += 1;
-		}
-        int max_nucl = *max_element(nucl_counter.begin(), nucl_counter.end()); 
-		score += motif.size() - max_nucl;
-	}
-	return score;
-}
-
 vector<string> greedyMotifSearch(const vector<string>& DNA, int k, ProfileGenerator* generator)
 {
     vector<string> bestMotif;
@@ -330,6 +430,56 @@ vector<string> greedyMotifSearch(const vector<string>& DNA, int k, ProfileGenera
         if (motifScore(bestMotif) > motifScore(motif))
         {
             bestMotif = motif;
+        }
+    }
+    return bestMotif;
+}
+
+vector<string> randomizedMotifSearch(const vector<string>& DNA, int k, int num_iterations, ProfileGenerator* generator)
+{
+    int size = DNA[0].size();
+    const size_t t = DNA.size();
+    vector<string> bestMotif;
+    for (size_t j=0; j<t; j++)
+    {
+        int start = rand() % (size - k + 1);
+        bestMotif.push_back(DNA[j].substr(start, k));
+    }
+    int bestScore = motifScore(bestMotif);
+
+    vector<string> motif;
+    for (int i=0; i<num_iterations; i++)
+    {
+        motif = randomGenerateMotif(DNA, k, generator);
+        if (motifScore(motif) < bestScore)
+        {
+            bestMotif = motif;
+            bestScore = motifScore(motif);
+        }
+    }
+    return bestMotif;
+}
+
+vector<string> GibbsMotifSearch(const vector<string>& DNA, int k, int N, int num_iterations, ProfileGenerator* generator)
+{
+    int size = DNA[0].size();
+    const size_t t = DNA.size();
+    vector<string> bestMotif;
+    for (size_t j=0; j<t; j++)
+    {
+        int start = rand() % (size - k + 1);
+        bestMotif.push_back(DNA[j].substr(start, k));
+    }
+    int bestScore = motifScore(bestMotif);
+
+    vector<string> motif;
+    for (int i=0; i<num_iterations; i++)
+    {
+        motif = GibbsGenerateMotif(DNA, k, N, generator);
+        if (motifScore(motif) < bestScore)
+        {
+            bestMotif = motif;
+            bestScore = motifScore(motif);
         }
     }
     return bestMotif;

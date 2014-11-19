@@ -44,7 +44,9 @@ std::string rev_complement(std::string DNA);
 std::vector<std::string> generateAllKMers(int k);
 
 double kMerProbability(const std::vector<std::vector<double>>& profile, std::string pattern);
+int motifScore(const std::vector<std::string>& motif);
 std::string getConsensus(const std::vector<std::vector<double>>& profile);
+std::vector<std::string> generateMotif(const std::vector<std::string>& DNA, const std::vector<std::vector<double>>& profile);
 
 class ProfileGenerator
 {
@@ -73,9 +75,8 @@ namespace week3
     std::string medianString(const std::vector<std::string>& DNA, int k);
 
     std::vector<std::string> greedyMotifSearch(const std::vector<std::string>& DNA, int k, ProfileGenerator* generator = new ProfileGenerator());
-
-    int motifScore(const std::vector<std::string>& motif);
-
+    std::vector<std::string> randomizedMotifSearch(const std::vector<std::string>& DNA, int k, int num_iterations = 100, ProfileGenerator* generator = new ProfileGenerator());
+    std::vector<std::string> GibbsMotifSearch(const std::vector<std::string>& DNA, int k, int N, int num_iterations = 20, ProfileGenerator* generator = new ProfileGenerator());
 } /* week3 */
 
 } /* bio */

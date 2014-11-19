@@ -33,6 +33,9 @@
     <ClInclude Include="Spectrum_processing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GibbsSampler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="string_processing.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Spectrum_processing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GibbsSampler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
