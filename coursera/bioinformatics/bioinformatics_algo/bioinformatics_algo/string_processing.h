@@ -31,6 +31,13 @@ namespace week1
     std::vector<int> ComputeFrequencies(std::string text, int k);
 } /* week1 */
 
+namespace week4
+{
+    std::vector<std::string> getComposition(std::string text, int k);
+    std::string reconstructPath(std::vector<std::string> components);
+    std::vector<std::pair<std::string, std::string>> getOverlapPairs(std::vector<std::string> patterns, int k);
+} /* week4 */
+
 } /* bio */
 
 #endif /* STRING_PROCESSING */

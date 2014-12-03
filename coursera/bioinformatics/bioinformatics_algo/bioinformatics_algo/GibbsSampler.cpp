@@ -11,7 +11,7 @@ namespace bio
 
 GibbsSampler::GibbsSampler(const vector<double>& init_probabilities)
 {
-    srand(time(NULL));
+    srand((unsigned int) time(NULL));
 
     double sum_probs = accumulate(init_probabilities.begin(), init_probabilities.end(), 0.0);
     probabilities = init_probabilities;

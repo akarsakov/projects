@@ -1,6 +1,8 @@
 #include "string_processing.h"
 
 #include <vector>
+#include <algorithm>
+
 #include "DNA_processing.h"
 #include "kMers_generator.h"
 
@@ -185,5 +187,53 @@ vector<int> ComputeFrequencies(string text, int k)
 }
 
 } /* week1 */
+
+namespace week4 
+{
+
+vector<string> getComposition(string text, int k)
+{
+    vector<string> kMers;
+	for (size_t i=0; i < text.size() - k + 1; i++)
+	{
+		string temp = text.substr(i, k);
+		kMers.push_back(temp);
+	}
+
+	sort(kMers.begin(), kMers.end());
+
+    return kMers;
+}
+
+string reconstructPath(vector<string> components)
+{
+    string path = components[0];
+    int k = components[0].size();
+
+    for (size_t i=1; i<components.size(); i++) {
+        path += components[i][k-1];
+    }
+
+    return path;
+}
+
+vector<pair<string, string>> getOverlapPairs(vector<string> patterns, int k) 
+{
+    vector<pair<string, string>> result;
+    for (size_t i=0; i<patterns.size(); i++)
+        for (size_t j=0; j<patterns.size(); j++) {
+            if (i == j)
+                continue;
+
+            string start = patterns[i].substr(patterns[i].size() - k, k);
+            string end = patterns[j].substr(0, k);
+
+            if (start == end)
+                result.push_back(make_pair(patterns[i], patterns[j]));
+        }
+    return result;
+}
+
+} /* week 4 */
 
 } /* bio */
