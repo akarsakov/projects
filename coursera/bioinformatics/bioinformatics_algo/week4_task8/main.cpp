@@ -2,31 +2,36 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <bitset>
 #include "genome_assembling.h"
 
 using namespace std;
 using namespace bio;
 
-#define N 8
-
 int main()
 {
+    string input_filename = "input.txt";
+    ifstream input(input_filename);
     ofstream output("result.txt");
 
-    int numkMers = (1 << N);
-    vector<string> kMers;
-    kMers.reserve(numkMers);
+    if (input.is_open())
+    {
+        int k;
+        input >> k;
+        vector<string> kMers;
 
-    for (int i=0; i<numkMers; i++) {
-        bitset<N> current(i);
-        string kMer = current.to_string();
-        kMers.push_back(kMer);
+        while (!input.eof()) {
+            string kMer;
+            input >> kMer;
+            kMers.push_back(kMer);
+        }
+
+        DeBruijnGraph g(kMers);
+
+        cout << g.reconstructPath() << endl;
     }
-
-    DeBruijnGraph g(kMers);
-
-    output << g.reconstructCycle().substr(0, numkMers) << endl;
-
+    else
+    {
+        cout << "Couldn't find input file: \"" << input_filename << "\"" << endl;
+    }
     return 0;
 }

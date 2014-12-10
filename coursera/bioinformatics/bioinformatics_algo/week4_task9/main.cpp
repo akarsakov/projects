@@ -2,40 +2,31 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <bitset>
 #include "genome_assembling.h"
 
 using namespace std;
 using namespace bio;
 
+#define N 8
+
 int main()
 {
-    string input_filename = "input.txt";
-    ifstream input(input_filename);
     ofstream output("result.txt");
 
-    if (input.is_open())
-    {
-        int k, d;
-        input >> k;
-        input >> d;
-        vector<pair<string, string>> pairkMers;
-        
-        string line;
-        while (getline(input, line)) {                      
-            auto sep = line.find_first_of('|');
-            if (sep != string::npos) {
-                string first = line.substr(0, sep);
-                string second = line.substr(sep+1, line.size()-(sep+1));
-                pairkMers.push_back(make_pair(first, second));
-            }
-        }
+    int numkMers = (1 << N);
+    vector<string> kMers;
+    kMers.reserve(numkMers);
 
-        DeBruijnGraph g(pairkMers);
-        output << g.reconstructPathFromPairedReads(k, d) << endl;
+    for (int i=0; i<numkMers; i++) {
+        bitset<N> current(i);
+        string kMer = current.to_string();
+        kMers.push_back(kMer);
     }
-    else
-    {
-        cout << "Couldn't find input file: \"" << input_filename << "\"" << endl;
-    }
+
+    DeBruijnGraph g(kMers);
+
+    output << g.reconstructCycle().substr(0, numkMers) << endl;
+
     return 0;
 }

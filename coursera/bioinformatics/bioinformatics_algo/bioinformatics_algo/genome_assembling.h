@@ -18,10 +18,13 @@ public:
     void addEdge(int s, int e);
     bool getEdge(int s, int e);
     void removeEdge(int s, int e);
+    void removeAllEdges(int s, int e);
+    void removeDuplicates();
 
     std::list<int> getNeighbors(int s);
     std::list<int> getEulerianCycle(int start_vertex = 0);
     std::list<int> getEulerianPath();
+    std::list<std::list<int>> getMaxNonBranchingPaths();
 
 private:
     int numV;
@@ -47,6 +50,8 @@ public:
     std::string reconstructPath();
     std::string reconstructPathFromPairedReads(int k, int d);
     std::string reconstructCycle();
+    std::list<std::string> generateContigs();
+
 private:
     Graph g;
     std::unordered_map<std::string, int> vertexes;

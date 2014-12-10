@@ -15,8 +15,6 @@ int main()
 
     if (input.is_open())
     {
-        int k;
-        input >> k;
         vector<string> kMers;
 
         while (!input.eof()) {
@@ -27,7 +25,11 @@ int main()
 
         DeBruijnGraph g(kMers);
 
-        cout << g.reconstructPath() << endl;
+        list<string> contigs = g.generateContigs();
+
+        for (auto contig : contigs) {
+            output << contig << endl;
+        }
     }
     else
     {

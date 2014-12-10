@@ -169,22 +169,24 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week4_task4_5", "week4_task
 		{9FDF2FFB-6664-41AF-98D5-8870892A45B5} = {9FDF2FFB-6664-41AF-98D5-8870892A45B5}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week4_task6", "week4_task6\week4_task6.vcxproj", "{24F197EE-1C29-43C3-A65D-4AC689D1AFF8}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9FDF2FFB-6664-41AF-98D5-8870892A45B5} = {9FDF2FFB-6664-41AF-98D5-8870892A45B5}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week4_task7", "week4_task7\week4_task7.vcxproj", "{46CB0922-AD59-4CC1-AC2E-8498E9176B7C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9FDF2FFB-6664-41AF-98D5-8870892A45B5} = {9FDF2FFB-6664-41AF-98D5-8870892A45B5}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week4_task8", "week4_task8\week4_task8.vcxproj", "{07BBB943-BB23-4D67-AFC6-B0201AB66AB1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9FDF2FFB-6664-41AF-98D5-8870892A45B5} = {9FDF2FFB-6664-41AF-98D5-8870892A45B5}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week4_task9", "week4_task9\week4_task9.vcxproj", "{F20CD5AF-C98B-4500-B8D9-00E9FA8A772E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9FDF2FFB-6664-41AF-98D5-8870892A45B5} = {9FDF2FFB-6664-41AF-98D5-8870892A45B5}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week4_task10", "week4_task10\week4_task10.vcxproj", "{AC43C4E2-4287-4EC2-87D7-89625E0FF98F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9FDF2FFB-6664-41AF-98D5-8870892A45B5} = {9FDF2FFB-6664-41AF-98D5-8870892A45B5}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week4_task11", "week4_task11\week4_task11.vcxproj", "{50956956-A258-4A43-B595-B512D9E994D6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "week4_task6_7", "week4_task6_7\week4_task6_7.vcxproj", "{B5D6F604-DD5A-4B99-B19B-E91B34CF142C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9FDF2FFB-6664-41AF-98D5-8870892A45B5} = {9FDF2FFB-6664-41AF-98D5-8870892A45B5}
 	EndProjectSection
@@ -331,14 +333,6 @@ Global
 		{3F3F08D5-917A-4D13-96DE-CC188DDD1D0F}.Debug|Win32.Build.0 = Debug|Win32
 		{3F3F08D5-917A-4D13-96DE-CC188DDD1D0F}.Release|Win32.ActiveCfg = Release|Win32
 		{3F3F08D5-917A-4D13-96DE-CC188DDD1D0F}.Release|Win32.Build.0 = Release|Win32
-		{24F197EE-1C29-43C3-A65D-4AC689D1AFF8}.Debug|Win32.ActiveCfg = Debug|Win32
-		{24F197EE-1C29-43C3-A65D-4AC689D1AFF8}.Debug|Win32.Build.0 = Debug|Win32
-		{24F197EE-1C29-43C3-A65D-4AC689D1AFF8}.Release|Win32.ActiveCfg = Release|Win32
-		{24F197EE-1C29-43C3-A65D-4AC689D1AFF8}.Release|Win32.Build.0 = Release|Win32
-		{46CB0922-AD59-4CC1-AC2E-8498E9176B7C}.Debug|Win32.ActiveCfg = Debug|Win32
-		{46CB0922-AD59-4CC1-AC2E-8498E9176B7C}.Debug|Win32.Build.0 = Debug|Win32
-		{46CB0922-AD59-4CC1-AC2E-8498E9176B7C}.Release|Win32.ActiveCfg = Release|Win32
-		{46CB0922-AD59-4CC1-AC2E-8498E9176B7C}.Release|Win32.Build.0 = Release|Win32
 		{07BBB943-BB23-4D67-AFC6-B0201AB66AB1}.Debug|Win32.ActiveCfg = Debug|Win32
 		{07BBB943-BB23-4D67-AFC6-B0201AB66AB1}.Debug|Win32.Build.0 = Debug|Win32
 		{07BBB943-BB23-4D67-AFC6-B0201AB66AB1}.Release|Win32.ActiveCfg = Release|Win32
@@ -347,6 +341,18 @@ Global
 		{F20CD5AF-C98B-4500-B8D9-00E9FA8A772E}.Debug|Win32.Build.0 = Debug|Win32
 		{F20CD5AF-C98B-4500-B8D9-00E9FA8A772E}.Release|Win32.ActiveCfg = Release|Win32
 		{F20CD5AF-C98B-4500-B8D9-00E9FA8A772E}.Release|Win32.Build.0 = Release|Win32
+		{AC43C4E2-4287-4EC2-87D7-89625E0FF98F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AC43C4E2-4287-4EC2-87D7-89625E0FF98F}.Debug|Win32.Build.0 = Debug|Win32
+		{AC43C4E2-4287-4EC2-87D7-89625E0FF98F}.Release|Win32.ActiveCfg = Release|Win32
+		{AC43C4E2-4287-4EC2-87D7-89625E0FF98F}.Release|Win32.Build.0 = Release|Win32
+		{50956956-A258-4A43-B595-B512D9E994D6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{50956956-A258-4A43-B595-B512D9E994D6}.Debug|Win32.Build.0 = Debug|Win32
+		{50956956-A258-4A43-B595-B512D9E994D6}.Release|Win32.ActiveCfg = Release|Win32
+		{50956956-A258-4A43-B595-B512D9E994D6}.Release|Win32.Build.0 = Release|Win32
+		{B5D6F604-DD5A-4B99-B19B-E91B34CF142C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B5D6F604-DD5A-4B99-B19B-E91B34CF142C}.Debug|Win32.Build.0 = Debug|Win32
+		{B5D6F604-DD5A-4B99-B19B-E91B34CF142C}.Release|Win32.ActiveCfg = Release|Win32
+		{B5D6F604-DD5A-4B99-B19B-E91B34CF142C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

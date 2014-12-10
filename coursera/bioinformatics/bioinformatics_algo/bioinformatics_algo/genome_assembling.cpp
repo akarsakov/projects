@@ -38,6 +38,16 @@ void Graph::removeEdge(int s, int e) {
     }
 }
 
+void Graph::removeAllEdges(int s, int e) {
+    if (getEdge(s, e))
+        adjList[s].remove(e);
+}
+
+void Graph::removeDuplicates() {
+    for (size_t i=0; i<adjList.size(); i++)
+        adjList[i].unique();
+}
+
 list<int> Graph::getNeighbors(int s) {
     return adjList[s];
 }
@@ -100,6 +110,68 @@ list<int> Graph::getEulerianPath() {
     list<int> result;
     for (size_t i=0; i<path.size()-1; i++) {
         result.push_back(path[(start_index + i + 1) % path.size()]);
+    }
+    return result;
+}
+
+list<list<int>> Graph::getMaxNonBranchingPaths() {
+    list<list<int>> result;
+
+    vector<int> income(numV, 0);
+    vector<int> outcome(numV);
+
+    for (size_t i=0; i<adjList.size(); i++) {
+        outcome[i] = adjList[i].size();
+
+        for (auto v : adjList[i]) {
+            income[v]++;
+        }
+    }
+
+    vector<int> visited(numV, 0);
+
+    for (int v=0; v<numV; v++) {
+        if (!(income[v] == 1 && outcome[v] == 1)) {
+            if (outcome[v] > 0) {
+                list<int> neighboors = getNeighbors(v);
+
+                for (auto w : neighboors) {
+                    list<int> currentPath;
+                    currentPath.push_back(v);
+                    currentPath.push_back(w);
+
+                    while (income[w] == 1 && outcome[w] == 1) {
+                        int u = getNeighbors(w).front();
+                        currentPath.push_back(u);
+                        w = u;
+                    }
+
+                    result.push_back(currentPath);
+                }
+            }
+        } else {
+            if (visited[v] == 0) {
+                visited[v] = 1;
+
+                int w = getNeighbors(v).front();
+                list<int> currentCycle;
+                currentCycle.push_back(v);
+                currentCycle.push_back(w);
+
+                while (income[w] == 1 && outcome[w] == 1) {
+                    visited[w] = 1;
+                    int u = getNeighbors(w).front();
+                    w = u;
+                    if (w == v)
+                        break;
+
+                    currentCycle.push_back(u);
+                }
+
+                if (w == v)
+                    result.push_back(currentCycle);
+            }
+        }
     }
     return result;
 }
@@ -259,6 +331,33 @@ string DeBruijnGraph::reconstructCycle() {
     }
 
     return genome;
+}
+
+list<string> DeBruijnGraph::generateContigs() {
+    list<list<int>> paths = g.getMaxNonBranchingPaths();
+    list<string> contigs;
+
+    for (auto path : paths) {
+        auto f = find_if(vertexes.begin(), vertexes.end(),
+                [=] (const pair<string, int>& k) {
+                    return k.second == path.front();
+                });
+        string contig = f->first;
+        
+        auto it = path.begin();
+        advance(it, 1);
+        for (; it!=path.end(); it++) {
+            auto f = find_if(vertexes.begin(), vertexes.end(),
+                [=] (const pair<string, int>& k) {
+                    return k.second == *it;
+                });
+            string cur = f->first;
+            contig += cur[cur.size()-1];
+        }
+        
+        contigs.push_back(contig);
+    }
+    return contigs;
 }
 
 };
