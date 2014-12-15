@@ -1,0 +1,15 @@
+counter = 0;
+for (int i=3; i<=n; i+=3) {
+    int current = i;
+    while (current % 3 == 0) {
+        current = current / 3;
+        counter++;
+    }
+}
+
+counter = 0;
+int divider = 3;
+while (divider <= n) {
+    counter += n / divider;
+    divider *= 3;
+}
