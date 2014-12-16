@@ -20,25 +20,51 @@ FordBellman.exp2 = read.csv("data/1_FordBellman_b.csv")
 exp1 <- data.frame(Dijkstra.exp1$n, Dijkstra.exp1$time, Dijkstra.exp2$time, FordBellman.exp1$time, FordBellman.exp2$time)
 colnames(exp1) <- c("n", "y1", "y2", "y3", "y4")
 ggplot(exp1, aes(n, y = Time (ms), color = Algorithm)) + 
-    geom_line(aes(y = y1, col="Dijkstra (m=n^2/10)")) + 
-    geom_line(aes(y = y2, col="Dijkstra (full graph)")) +
-    geom_line(aes(y = y3, col="Ford-Bellman (m=n^2/10)")) + 
-    geom_line(aes(y = y4, col="Ford-Bellman (full graph)"))
+    geom_smooth(aes(y = y1, col="Dijkstra (m=n^2/10)"), method=loess) + 
+    geom_smooth(aes(y = y2, col="Dijkstra (full graph)"), method=loess) +
+    geom_smooth(aes(y = y3, col="Ford-Bellman (m=n^2/10)"), method=loess) + 
+    geom_smooth(aes(y = y4, col="Ford-Bellman (full graph)"), method=loess)
 ```
 
 Покажем, что сложность алгоритма действительно O((E+V)*log(V)). Разделим время на (n^2 + n)*log(n). И получим практически прямой график:
 
 ```{r}
 Dijkstra.exp1$time = Dijkstra.exp1$time / ((Dijkstra.exp1$n * Dijkstra.exp1$n + Dijkstra.exp1$n) * log2(Dijkstra.exp1$n))
-ggplot(Dijkstra.exp1, aes(n, y = ratio)) + geom_line(aes(y = time))
+ggplot(Dijkstra.exp1, aes(n, y = ratio)) + geom_line(aes(y = time), method=loess)
 ```
 
 Построим аналогичный график для алгоритма Беллмана-Форда:
 
 ```{r}
-FordBellman.exp1$time = 1000 * FordBellman.exp1$time / (FordBellman.exp1$n * FordBellman.exp1$n * FordBellman.exp1$n)
-ggplot(FordBellman.exp1, aes(n, y = ratio)) + geom_line(aes(y = time))
+FordBellman.exp2$n = FordBellman.exp2$n / 10
+FordBellman.exp2$time = FordBellman.exp2$time / (FordBellman.exp2$n * FordBellman.exp2$n * FordBellman.exp2$n)
+ggplot(FordBellman.exp2, aes(n, y = ratio)) + geom_line(aes(y = time), method=loess)
 ```
+
+Теперь возьмем количество ребер пропорционально O(n):
+
+```{r}
+Dijkstra.exp3 = read.csv("data/2_Dejkstra_a.csv")
+Dijkstra.exp4 = read.csv("data/2_Dejkstra_b.csv")
+FordBellman.exp3 = read.csv("data/2_FordBellman_a.csv")
+FordBellman.exp4 = read.csv("data/2_FordBellman_b.csv")
+exp2 <- data.frame(Dijkstra.exp3$n, Dijkstra.exp3$time, Dijkstra.exp4$time, FordBellman.exp3$time, FordBellman.exp4$time)
+colnames(exp2) <- c("n", "y1", "y2", "y3", "y4")
+ggplot(exp2, aes(n, y = Time (ms), color = Algorithm)) + 
+    geom_smooth(aes(y = y1, col="Dijkstra (m=100*n)"), method=loess) + 
+    geom_smooth(aes(y = y2, col="Dijkstra (m=1000*n)"), method=loess) +
+    geom_smooth(aes(y = y3, col="Ford-Bellman (m=100*n)"), method=loess) + 
+    geom_smooth(aes(y = y4, col="Ford-Bellman (m=1000*n)"), method=loess)
+
+Dijkstra.exp3$time = Dijkstra.exp3$time / (101*Dijkstra.exp3$n * log2(Dijkstra.exp3$n))
+ggplot(Dijkstra.exp3, aes(n, y = ratio)) + geom_line(aes(y = time), method = loess)
+
+FordBellman.exp3$n = FordBellman.exp3$n / 10
+FordBellman.exp3$time = FordBellman.exp3$time / (FordBellman.exp3$n * FordBellman.exp3$n)
+ggplot(FordBellman.exp3, aes(n, y = ratio)) + geom_line(aes(y = time), method=loess)
+```
+
+Алгоритм Форда-Беллмана имеет хуже оценку количества операций, чем алгоритм Дейкстры. Особенно это проявляется, когда количество ребер в графе пропорционально квадрату количества вершин. Таким образом для подобных графов целесообразнее использовать алгоритм Дейкстры. С другой стороны, алгоритм Дейкстры работает некорректно, если в графе есть отрицательные веса.
 
 [1]: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 [2]: https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm

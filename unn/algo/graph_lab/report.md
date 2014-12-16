@@ -21,10 +21,10 @@ FordBellman.exp2 = read.csv("data/1_FordBellman_b.csv")
 exp1 <- data.frame(Dijkstra.exp1$n, Dijkstra.exp1$time, Dijkstra.exp2$time, FordBellman.exp1$time, FordBellman.exp2$time)
 colnames(exp1) <- c("n", "y1", "y2", "y3", "y4")
 ggplot(exp1, aes(n, y = Time (ms), color = Algorithm)) + 
-    geom_line(aes(y = y1, col="Dijkstra (m=n^2/10)")) + 
-    geom_line(aes(y = y2, col="Dijkstra (full graph)")) +
-    geom_line(aes(y = y3, col="Ford-Bellman (m=n^2/10)")) + 
-    geom_line(aes(y = y4, col="Ford-Bellman (full graph)"))
+    geom_smooth(aes(y = y1, col="Dijkstra (m=n^2/10)"), method=loess) + 
+    geom_smooth(aes(y = y2, col="Dijkstra (full graph)"), method=loess) +
+    geom_smooth(aes(y = y3, col="Ford-Bellman (m=n^2/10)"), method=loess) + 
+    geom_smooth(aes(y = y4, col="Ford-Bellman (full graph)"), method=loess)
 ```
 
 ![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1.png) 
@@ -34,7 +34,7 @@ ggplot(exp1, aes(n, y = Time (ms), color = Algorithm)) +
 
 ```r
 Dijkstra.exp1$time = Dijkstra.exp1$time / ((Dijkstra.exp1$n * Dijkstra.exp1$n + Dijkstra.exp1$n) * log2(Dijkstra.exp1$n))
-ggplot(Dijkstra.exp1, aes(n, y = ratio)) + geom_line(aes(y = time))
+ggplot(Dijkstra.exp1, aes(n, y = ratio)) + geom_line(aes(y = time), method=loess)
 ```
 
 ![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
@@ -43,22 +43,46 @@ ggplot(Dijkstra.exp1, aes(n, y = ratio)) + geom_line(aes(y = time))
 
 
 ```r
-FordBellman.exp1$time = 1000 * FordBellman.exp1$time / (FordBellman.exp1$n * FordBellman.exp1$n * FordBellman.exp1$n)
-```
-
-```
-## Warning: целочисленное переполнение привело к созданию NA
-```
-
-```r
-ggplot(FordBellman.exp1, aes(n, y = ratio)) + geom_line(aes(y = time))
-```
-
-```
-## Warning: Removed 44 rows containing missing values (geom_path).
+FordBellman.exp2$n = FordBellman.exp2$n / 10
+FordBellman.exp2$time = FordBellman.exp2$time / (FordBellman.exp2$n * FordBellman.exp2$n * FordBellman.exp2$n)
+ggplot(FordBellman.exp2, aes(n, y = ratio)) + geom_line(aes(y = time), method=loess)
 ```
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+
+“еперь возьмем количество ребер пропорционально O(n):
+
+
+```r
+Dijkstra.exp3 = read.csv("data/2_Dejkstra_a.csv")
+Dijkstra.exp4 = read.csv("data/2_Dejkstra_b.csv")
+FordBellman.exp3 = read.csv("data/2_FordBellman_a.csv")
+FordBellman.exp4 = read.csv("data/2_FordBellman_b.csv")
+exp2 <- data.frame(Dijkstra.exp3$n, Dijkstra.exp3$time, Dijkstra.exp4$time, FordBellman.exp3$time, FordBellman.exp4$time)
+colnames(exp2) <- c("n", "y1", "y2", "y3", "y4")
+ggplot(exp2, aes(n, y = Time (ms), color = Algorithm)) + 
+    geom_smooth(aes(y = y1, col="Dijkstra (m=100*n)"), method=loess) + 
+    geom_smooth(aes(y = y2, col="Dijkstra (m=1000*n)"), method=loess) +
+    geom_smooth(aes(y = y3, col="Ford-Bellman (m=100*n)"), method=loess) + 
+    geom_smooth(aes(y = y4, col="Ford-Bellman (m=1000*n)"), method=loess)
+```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-41.png) 
+
+```r
+Dijkstra.exp3$time = Dijkstra.exp3$time / (101*Dijkstra.exp3$n * log2(Dijkstra.exp3$n))
+ggplot(Dijkstra.exp3, aes(n, y = ratio)) + geom_line(aes(y = time), method = loess)
+```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-42.png) 
+
+```r
+FordBellman.exp3$n = FordBellman.exp3$n / 10
+FordBellman.exp3$time = FordBellman.exp3$time / (FordBellman.exp3$n * FordBellman.exp3$n)
+ggplot(FordBellman.exp3, aes(n, y = ratio)) + geom_line(aes(y = time), method=loess)
+```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-43.png) 
 
 [1]: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 [2]: https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
