@@ -36,10 +36,10 @@ void experiment1(string filename, int algo, int edge_strategy) {
         
         switch (algo) {
         case 0:
-            Deijkstra_SPT(g, 0, n-5);
+            Deijkstra_SPT(g, 0);
             break;
         case 1:
-            FordBellman_SPT(g, 0, n-5);
+            FordBellman_SPT(g, 0);
             break;
         };
         
@@ -61,10 +61,10 @@ void experiment2(string filename, int algo, int edge_strategy) {
         
         switch (algo) {
         case 0:
-            Deijkstra_SPT(g, 0, n-5);
+            Deijkstra_SPT(g, 0);
             break;
         case 1:
-            FordBellman_SPT(g, 0, n-5);
+            FordBellman_SPT(g, 0);
             break;
         };
         
@@ -96,10 +96,10 @@ void experiment3(string filename, int algo, int edge_strategy) {
         
         switch (algo) {
         case 0:
-            Deijkstra_SPT(g, 0, n-5);
+            Deijkstra_SPT(g, 0);
             break;
         case 1:
-            FordBellman_SPT(g, 0, n-5);
+            FordBellman_SPT(g, 0);
             break;
         };
         

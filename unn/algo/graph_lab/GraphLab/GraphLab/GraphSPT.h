@@ -1,4 +1,4 @@
 #include "Graph.h"
 
-double Deijkstra_SPT(const Graph& g, int s, int e);
-double FordBellman_SPT(const Graph& g, int s, int e);
+std::vector<double> Deijkstra_SPT(const Graph& g, int s);
+std::vector<double> FordBellman_SPT(const Graph& g, int s);

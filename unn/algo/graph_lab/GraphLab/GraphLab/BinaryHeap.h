@@ -3,16 +3,16 @@
 
 #include <utility>
 #include <algorithm>
+#include <vector>
 
 class BinaryHeap {
 public:
     BinaryHeap(int sz): capacity(sz), size(0) {
-        heap = new std::pair<int, double>[capacity];
+        heap.resize(capacity);
+        indexes.resize(capacity, -1);
     };
     
-    virtual ~BinaryHeap() {
-        delete[] heap;
-    }
+    virtual ~BinaryHeap() { }
     
     bool isEmpty() {
         return size == 0;
@@ -25,7 +25,8 @@ public:
     void insert(std::pair<int, double> elem) {
         if (isFull())
             return;
-            
+        
+        indexes[elem.first] = size;
         heap[size++] = elem;
         emersion(size-1);
     }
@@ -41,23 +42,28 @@ public:
         if (isEmpty())
             return;
         size--;
+
+        indexes[heap[0].first] = -1;
+            
         if (size > 0) {
-            std::swap(heap[0], heap[size]);
+            heap[0] = heap[size];
+            indexes[heap[0].first] = 0;
             dive(0);
         }
     }
 
-    void increaseKey(int val, double newKey) {
-        int i=0;
-        for (; i<size; i++) {
-            if (heap[i].first == val)
-                break;
-        }
-        if (i<size) {
-            heap[i].second = newKey;
-            emersion(i);
+    void increaseKey(std::pair<int, double> newKey) {
+        int index = indexes[newKey.first];
+        if (index >= 0) {
+            if (newKey.second < heap[index].second) {
+                heap[index].second = newKey.second;
+                emersion(index);
+            }
+        } else {
+            insert(newKey);
         }
     }
+
 private:
     inline int parent(int index) {
         return index >> 1;
@@ -71,12 +77,17 @@ private:
         return (index << 1) + 1;
     }
 
+    inline void swapElements(int i1, int i2) {
+        std::swap(indexes[heap[i1].first], indexes[heap[i2].first]);
+        std::swap(heap[i1], heap[i2]);
+    }
+
     void emersion(int index) {
         if (index == 0)
             return;
         int p = parent(index);
         if (heap[p].second > heap[index].second) {
-            std::swap(heap[p], heap[index]);
+            swapElements(p, index);
             emersion(p);
         }
     }
@@ -89,10 +100,10 @@ private:
         
         if (heap[index].second > min_elem) {
             if (left_elem == min_elem) {
-                swap(heap[index], heap[left(index)]);
+                swapElements(index, left(index));
                 dive(left(index));
             } else {
-                swap(heap[index], heap[right(index)]);
+                swapElements(index, right(index));
                 dive(right(index));
             }
         }
@@ -100,7 +111,8 @@ private:
 
     int capacity;
     int size;
-    std::pair<int, double>* heap;
+    std::vector<std::pair<int, double>> heap;
+    std::vector<int> indexes;
 };
 
 #endif /* __BINARY_HEAP__ */

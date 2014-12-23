@@ -1,10 +1,9 @@
-
 #include "GraphSPT.h"
 #include "BinaryHeap.h"
 
 using namespace std;
 
-double Deijkstra_SPT(const Graph& g, int s, int e) {
+vector<double> Deijkstra_SPT(const Graph& g, int s) {
     BinaryHeap heap(g.getV());
     vector<bool> visited(g.getV(), 0);
     vector<double> distances(g.getV(), DBL_MAX);
@@ -21,27 +20,22 @@ double Deijkstra_SPT(const Graph& g, int s, int e) {
             continue;
         visited[current.first] = true;
 
-        //if (current.first == e)
-        //    break;
-
         list<pair<int, double>> neighbors = g.getNeighbors(current.first);
         for (auto n : neighbors) {
+            if (visited[n.first])
+                continue;
+
             double newDist = current.second + n.second;
-            if (distances[n.first] < DBL_MAX) {
-                if (newDist < distances[n.first]) {
-                    heap.increaseKey(n.first, newDist);
-                    distances[n.first] = newDist;
-                }
-            } else {
+            if (newDist < distances[n.first]) {
+                heap.increaseKey(make_pair(n.first, newDist));
                 distances[n.first] = newDist;
-                heap.insert(make_pair(n.first, newDist)); 
             }
         }
     }
-    return distances[e];
+    return distances;
 }
 
-double FordBellman_SPT(const Graph& g, int s, int e) {
+vector<double> FordBellman_SPT(const Graph& g, int s) {
     vector<double> distances(g.getV(), DBL_MAX);
     distances[s] = 0;
 
@@ -64,5 +58,5 @@ double FordBellman_SPT(const Graph& g, int s, int e) {
             break;
     }
 
-    return distances[e];
+    return distances;
 }
