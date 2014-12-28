@@ -34,8 +34,6 @@ namespace week5
                                         const int gap_open, const int gap_extension);
     void alignmentMiddleEdge(const std::string& v, const std::string& w, const int sigma, const std::map<std::pair<char, char>, int>& blosum_map,
                              std::pair<int, int>& start, std::pair<int, int>& end);
-    int linearSpaceAlignment(std::string& v, std::string& w, const std::map<std::pair<char, char>, int>& blosum_map, const int sigma);
-
 } /* week5 */
 
 } /* bio */

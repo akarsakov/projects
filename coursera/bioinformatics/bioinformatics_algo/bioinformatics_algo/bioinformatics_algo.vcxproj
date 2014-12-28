@@ -74,6 +74,7 @@
     <ClInclude Include="genome_assembling.h" />
     <ClInclude Include="GibbsSampler.h" />
     <ClInclude Include="kMers_generator.h" />
+    <ClInclude Include="random_breakage_model.h" />
     <ClInclude Include="RNA_processing.h" />
     <ClInclude Include="Spectrum_processing.h" />
     <ClInclude Include="string_processing.h" />
@@ -84,6 +85,7 @@
     <ClCompile Include="genome_assembling.cpp" />
     <ClCompile Include="GibbsSampler.cpp" />
     <ClCompile Include="kMers_generator.cpp" />
+    <ClCompile Include="random_breakage_model.cpp" />
     <ClCompile Include="RNA_processing.cpp" />
     <ClCompile Include="Spectrum_processing.cpp" />
     <ClCompile Include="string_processing.cpp" />

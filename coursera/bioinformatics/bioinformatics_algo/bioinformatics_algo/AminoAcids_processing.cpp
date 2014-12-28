@@ -667,12 +667,6 @@ void alignmentMiddleEdge(const string& v, const string& w, const int sigma, cons
                                                           make_pair(max_i+1, middle+1);
 }
 
-int linearSpaceAlignment(string& v, string& w, const map<pair<char, char>, int>& blosum_map, const int sigma) {
-
-
-
-}
-
 } /* week5 */
 
 } /* bio */
