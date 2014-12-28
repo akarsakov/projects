@@ -1,0 +1,10 @@
+﻿Build started 28.12.2014 22:31:32.
+     1>Project "D:\Dev\git_repos\projects\coursera\bioinformatics\bioinformatics_algo\week5_task10\week5_task10.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Dev\git_repos\projects\coursera\bioinformatics\bioinformatics_algo\Debug\week5_task10.exe" /INCREMENTAL /NOLOGO bioinformatics_algo.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Dev\git_repos\projects\coursera\bioinformatics\bioinformatics_algo\Debug\week5_task10.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Dev\git_repos\projects\coursera\bioinformatics\bioinformatics_algo\Debug\week5_task10.lib" /MACHINE:X86 Debug\main.obj
+         week5_task10.vcxproj -> D:\Dev\git_repos\projects\coursera\bioinformatics\bioinformatics_algo\Debug\week5_task10.exe
+     1>Done Building Project "D:\Dev\git_repos\projects\coursera\bioinformatics\bioinformatics_algo\week5_task10\week5_task10.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.37

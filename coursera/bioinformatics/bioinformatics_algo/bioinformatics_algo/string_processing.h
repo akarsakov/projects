@@ -38,6 +38,14 @@ namespace week4
     std::vector<std::pair<std::string, std::string>> getOverlapPairs(std::vector<std::string> patterns, int k);
 } /* week4 */
 
+namespace week5
+{
+    enum DIRECTIONS { DOWN = 0, RIGHT = 1, DIAGONAL = 2, TAXI = 3, EXTENSION = 4, OPEN = 5 };
+
+    std::string getLCS(const std::string& a, const std::string& b);
+    int getEditDistance(const std::string& v, const std::string& w, const int sigma);
+} /* week5 */
+
 } /* bio */
 
 #endif /* STRING_PROCESSING */

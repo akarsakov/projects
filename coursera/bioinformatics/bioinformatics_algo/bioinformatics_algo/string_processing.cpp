@@ -236,4 +236,100 @@ vector<pair<string, string>> getOverlapPairs(vector<string> patterns, int k)
 
 } /* week 4 */
 
+namespace week5 
+{
+ 
+static void constructLCS(vector<vector<DIRECTIONS>>& backtrack, string v, int i, int j, string& out)
+{
+	if ((i==0) || (j==0))
+		return;
+
+	if (backtrack[i][j] == DIRECTIONS::DOWN)
+		constructLCS(backtrack, v, i-1, j, out);
+	else if (backtrack[i][j] == DIRECTIONS::RIGHT)
+		constructLCS(backtrack, v, i, j-1, out);
+	else {
+		constructLCS(backtrack, v, i-1, j-1, out);
+		out += v[j-1];
+	}
+}
+
+string getLCS(const string& v, const string& w) {
+    size_t m = v.size();
+	size_t n = w.size();
+    vector<vector<int>> s;
+    vector<vector<DIRECTIONS>> backtracks;
+
+	s.resize(n+1);
+	for (size_t i=0; i<n+1; i++)
+		s[i].resize(m+1, INT_MAX);
+
+	backtracks.resize(n+1);
+	for (size_t i=0; i<n+1; i++)
+		backtracks[i].resize(m+1);
+	
+	s[0][0] = 0;
+    for (size_t i=0; i<n+1; i++) {
+		s[i][0] = 0;
+		backtracks[i][0] = DIRECTIONS::DOWN;
+	}
+
+	for (size_t j=0; j<m+1; j++) {
+		s[0][j] = 0;
+		backtracks[0][j] = DIRECTIONS::RIGHT;
+	}
+
+	for (size_t i=1; i<n+1; i++) {
+		for (size_t j=1; j<m+1; j++) {
+			int diag = s[i-1][j-1];
+			if (v[j-1] == w[i-1])
+				diag = s[i-1][j-1] + 1;
+			
+			int maximum = max(diag, max(s[i-1][j], s[i][j-1]));
+			if (maximum == s[i][j-1])
+				backtracks[i][j] = DIRECTIONS::RIGHT;
+			else if (maximum == s[i-1][j])
+				backtracks[i][j] = DIRECTIONS::DOWN;
+			else
+                backtracks[i][j] = DIRECTIONS::DIAGONAL;
+
+			s[i][j] = maximum;
+		}
+	}
+
+    string LCS;
+    constructLCS(backtracks, v, n, m, LCS);
+    return LCS;
+}
+
+int getEditDistance(const string& v, const string& w, const int sigma) {
+    vector<vector<int>> s;
+    size_t m = v.size();
+	size_t n = w.size();
+
+    s.resize(n+1);
+	for (size_t i=0; i<n+1; i++)
+		s[i].resize(m+1, INT_MAX);
+	
+	s[0][0] = 0;
+	for (size_t i=1; i<n+1; i++) {
+		s[i][0] = s[i-1][0] - sigma;
+	}
+
+	for (size_t j=1; j<m+1; j++) {
+		s[0][j] = s[0][j-1] - sigma;
+	}
+
+	for (size_t i=1; i<n+1; i++) {
+		for (size_t j=1; j<m+1; j++) {
+			int diag = v[j-1] == w[i-1] ? s[i-1][j-1] : s[i-1][j-1] - sigma;
+			s[i][j] = max(diag, max(s[i-1][j] - sigma, s[i][j-1] - sigma));
+		}
+	}
+
+    return -s[n][m];
+}
+
+} /* week5 */
+
 } /* bio */
