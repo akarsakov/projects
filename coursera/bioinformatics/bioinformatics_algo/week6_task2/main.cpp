@@ -14,12 +14,12 @@ int main()
     ifstream input(input_filename);
 
     if (input.is_open()) {
-        vector<int> permutation;
+        vector<vector<int>> permutations;
         string line;
         getline(input, line);
-        readPermutationString(line, permutation);
+        readPermutationString(line, permutations);
 
-        cout << getNumBreakpoints(permutation) << endl;
+        cout << getNumBreakpoints(permutations[0]) << endl;
     } else
     {
         cout << "Couldn't find input file: \"" << input_filename << "\"" << endl;

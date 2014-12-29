@@ -14,13 +14,13 @@ int main()
     ifstream input(input_filename);
 
     if (input.is_open()) {
-        vector<int> permutation;
+        vector<vector<int>> permutations;
         string line;
         getline(input, line);
-        readPermutationString(line, permutation);
+        readPermutationString(line, permutations);
 
         vector<vector<int>> sorted;
-        greedySorting(permutation, sorted);
+        greedySorting(permutations[0], sorted);
 
         for (auto stage : sorted) {
             cout << permutationString(stage) << endl;
