@@ -16,6 +16,8 @@ std::vector<int> cycleToChromosome(const std::vector<int>& cycle);
 std::vector<std::pair<int, int>> getColoredEdges(const std::vector<std::vector<int>>& permutations);
 std::vector<std::vector<int>> edgesToGenome(const std::vector<std::pair<int, int>>& edges);
 int getNumCycles(const std::vector<std::pair<int, int>>& edges);
+void twoBrakeOnGenomeGraph(std::vector<std::pair<int, int>>& edges, int i1, int i2, int j1, int j2);
+void twoBrakeOnGenome(std::vector<std::vector<int>>& genome, int i1, int i2, int j1, int j2);
 
 namespace week6 {
 

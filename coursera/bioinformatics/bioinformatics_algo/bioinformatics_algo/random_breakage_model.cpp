@@ -1,5 +1,6 @@
 #include <sstream>
 #include <list>
+#include <algorithm>
 
 #include "random_breakage_model.h"
 
@@ -29,20 +30,23 @@ public:
         adjList[end].erase(f);
     }
 
-    int getNumCycles() {
-        int cycles = 0;
+    vector<vector<int>> getCycles() {
+        vector<vector<int>> cycles;
         vector<bool> visited(adjList.size(), false);
         for (size_t i=0; i<adjList.size(); i++) {
             if (visited[i])
                 continue;
 
             visited[i] = true;
-            cycles++;
+            cycles.push_back(vector<int>());
+            cycles.back().push_back(i);
+
             int next = getNeighbor(i);
             removeEdge(i, next);
 
             while (next != i) {
                 visited[next] = true;
+                cycles.back().push_back(next);
                 int prev = next;
                 next = getNeighbor(prev);
                 removeEdge(prev, next);
@@ -157,20 +161,37 @@ vector<pair<int, int>> getColoredEdges(const vector<vector<int>>& permutations) 
 
 vector<vector<int>> edgesToGenome(const vector<pair<int, int>>& edges) {
     vector<vector<int>> genome;
-    size_t i=0;
-    for ( ; i<edges.size(); i++) {
+    
+    vector<int> graph(2*edges.size() + 1);
+    for (auto edge : edges) {
+        graph[edge.first] = edge.second;
+        int in = edge.first % 2 == 0 ? edge.first-1 : edge.first+1;
+        graph[in] = edge.first;
+    }
+
+    vector<int> visited(edges.size()+1, false);
+    for (size_t i=1; i<visited.size(); i++) {
+        if (visited[i])
+            continue;
+
         vector<int> cycle;
-        int start = edges[i].first % 2 == 0 ? edges[i].first-1 : edges[i].first+1;
-        cycle.push_back(start);
+        int next = i;
+        do {
+            visited[next] = true;
+            int cur;
+            if (graph[2*next-1] == 2*next) {
+                cycle.push_back(2*next-1);
+                cycle.push_back(2*next);
+                cur = 2*next;
+            } else {
+                cycle.push_back(2*next);
+                cycle.push_back(2*next-1);
+                cur = 2*next-1;
+            }
+            next = (graph[cur]+1)/2;
+        } while (next != i);
 
-        while (edges[i].second != start) {
-            cycle.push_back(edges[i].first);
-            cycle.push_back(edges[i].second);
-            i++;
-        }
-        cycle.push_back(edges[i].first);
         genome.push_back(cycleToChromosome(cycle));
-
     }
     return genome;
 }
@@ -185,7 +206,31 @@ int getNumCycles(const vector<pair<int, int>>& edges) {
     for (auto edge : edges) {
         g.addEdge(edge.first-1, edge.second-1);
     }
-    return g.getNumCycles();
+    return g.getCycles().size();
+}
+
+void twoBrakeOnGenomeGraph(vector<pair<int, int>>& edges, int i1, int i2, int j1, int j2) {
+    int i_index, j_index;
+    
+    for (size_t i=0; i<edges.size(); i++) {
+        if ((edges[i].first == i1 && edges[i].second == i2) ||
+            (edges[i].first == i2 && edges[i].second == i1)) {
+            i_index = i;
+        }
+        
+        if ((edges[i].first == j1 && edges[i].second == j2) ||
+            (edges[i].first == j2 && edges[i].second == j1)) {
+            j_index = i;
+        }
+    }
+
+    swap(edges[i_index].second, edges[j_index].second);
+}
+
+void twoBrakeOnGenome(vector<vector<int>>& genome, int i1, int i2, int j1, int j2) {
+    vector<pair<int, int>> edges = getColoredEdges(genome);
+    twoBrakeOnGenomeGraph(edges, i1, i2, j1, j2);
+    genome = edgesToGenome(edges);
 }
 
 namespace week6
