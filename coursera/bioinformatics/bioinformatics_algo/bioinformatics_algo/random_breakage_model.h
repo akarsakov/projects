@@ -19,10 +19,12 @@ int getNumCycles(const std::vector<std::pair<int, int>>& edges);
 void twoBrakeOnGenomeGraph(std::vector<std::pair<int, int>>& edges, int i1, int i2, int j1, int j2);
 void twoBrakeOnGenome(std::vector<std::vector<int>>& genome, int i1, int i2, int j1, int j2);
 
+
+
 namespace week6 {
 
     void greedySorting(const std::vector<int>& permutation, std::vector<std::vector<int>>& seq_permutations);
-
+    void twoBreakSorting(const std::vector<int>& P, const std::vector<int>& Q, std::vector<std::vector<int>>& seq_permutations);
 } /* week6 */
     
 } /* boi */

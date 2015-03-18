@@ -3,7 +3,7 @@
 
 using namespace std;
 
-vector<double> Deijkstra_SPT(const Graph& g, int s) {
+vector<double> Deijkstra_SPT(const Graph& g, size_t s) {
     BinaryHeap heap(g.getV());
     vector<bool> visited(g.getV(), 0);
     vector<double> distances(g.getV(), DBL_MAX);
@@ -11,16 +11,15 @@ vector<double> Deijkstra_SPT(const Graph& g, int s) {
     heap.insert(make_pair(s, 0));
     distances[s] = 0;
 
-
     while (!heap.isEmpty()) {
-        pair<int, double> current = heap.top();
+        pair<size_t, double> current = heap.top();
         heap.pop();
 
         if (visited[current.first])
             continue;
         visited[current.first] = true;
 
-        list<pair<int, double>> neighbors = g.getNeighbors(current.first);
+        list<pair<size_t, double>> neighbors = g.getNeighbors(current.first);
         for (auto n : neighbors) {
             if (visited[n.first])
                 continue;
@@ -35,17 +34,17 @@ vector<double> Deijkstra_SPT(const Graph& g, int s) {
     return distances;
 }
 
-vector<double> FordBellman_SPT(const Graph& g, int s) {
+vector<double> FordBellman_SPT(const Graph& g, size_t s) {
     vector<double> distances(g.getV(), DBL_MAX);
     distances[s] = 0;
 
-    for (int i=0; i<g.getV()-1; i++) {
+    for (size_t i=0; i<g.getV()-1; i++) {
         bool changed = false;
-        for (int j=0; j<g.getV(); j++) {
+        for (size_t j=0; j<g.getV(); j++) {
             if (distances[j] == DBL_MAX)
                 continue;
 
-            list<pair<int, double>> neighbors = g.getNeighbors(j);
+            list<pair<size_t, double>> neighbors = g.getNeighbors(j);
             for (auto n : neighbors) {
                 if (distances[j] + n.second < distances[n.first]) {
                     distances[n.first] = distances[j] + n.second;

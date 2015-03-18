@@ -13,7 +13,13 @@
 
 ```r
 library(ggplot2)
+```
 
+```
+## Warning: package 'ggplot2' was built under R version 3.1.1
+```
+
+```r
 Dijkstra.exp1 = read.csv("data/1_Dejkstra_a.csv")
 Dijkstra.exp2 = read.csv("data/1_Dejkstra_b.csv")
 FordBellman.exp1 = read.csv("data/1_FordBellman_a.csv")
@@ -27,7 +33,7 @@ ggplot(exp1, aes(n, y = Time (ms), color = Algorithm)) +
     geom_smooth(aes(y = y4, col="Ford-Bellman (full graph)"), method=loess)
 ```
 
-![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1.png) 
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png) 
 
 Покажем, что сложность алгоритма действительно O((E+V)*log(V)). Разделим время на (n^2 + n)*log(n). И получим практически прямой график:
 
@@ -37,7 +43,7 @@ Dijkstra.exp1$time = Dijkstra.exp1$time / ((Dijkstra.exp1$n * Dijkstra.exp1$n + 
 ggplot(Dijkstra.exp1, aes(n, y = ratio)) + geom_line(aes(y = time), method=loess)
 ```
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
 
 Построим аналогичный график для алгоритма Беллмана-Форда:
 
@@ -48,7 +54,7 @@ FordBellman.exp2$time = FordBellman.exp2$time / (FordBellman.exp2$n * FordBellma
 ggplot(FordBellman.exp2, aes(n, y = ratio)) + geom_line(aes(y = time), method=loess)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
 Теперь возьмем количество ребер пропорционально O(n):
 
@@ -67,14 +73,14 @@ ggplot(exp2, aes(n, y = Time (ms), color = Algorithm)) +
     geom_smooth(aes(y = y4, col="Ford-Bellman (m=1000*n)"), method=loess)
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-41.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
 ```r
 Dijkstra.exp3$time = Dijkstra.exp3$time / (101*Dijkstra.exp3$n * log2(Dijkstra.exp3$n))
 ggplot(Dijkstra.exp3, aes(n, y = ratio)) + geom_line(aes(y = time), method = loess)
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-42.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-2.png) 
 
 ```r
 FordBellman.exp3$n = FordBellman.exp3$n / 10
@@ -82,7 +88,9 @@ FordBellman.exp3$time = FordBellman.exp3$time / (FordBellman.exp3$n * FordBellma
 ggplot(FordBellman.exp3, aes(n, y = ratio)) + geom_line(aes(y = time), method=loess)
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-43.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-3.png) 
+
+Алгоритм Форда-Беллмана имеет хуже оценку количества операций, чем алгоритм Дейкстры. Особенно это проявляется, когда количество ребер в графе пропорционально квадрату количества вершин. Таким образом для подобных графов целесообразнее использовать алгоритм Дейкстры. С другой стороны, алгоритм Дейкстры работает некорректно, если в графе есть отрицательные веса.
 
 [1]: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 [2]: https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm

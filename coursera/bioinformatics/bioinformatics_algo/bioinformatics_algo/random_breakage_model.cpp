@@ -235,6 +235,11 @@ void twoBrakeOnGenome(vector<vector<int>>& genome, int i1, int i2, int j1, int j
 
 namespace week6
 {
+void twoBreakSorting(const vector<int>& P, const vector<int>& Q, vector<vector<int>>& seq_permutations) {
+    seq_permutations.push_back(P);
+    vector<pair<int, int>> edges
+
+}
 
 void greedySorting(const vector<int>& perm, vector<vector<int>>& seq_permutations) {
     vector<int> permutation = perm;

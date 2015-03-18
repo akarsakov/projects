@@ -9,15 +9,15 @@
 
 class Graph {
 public:
-    Graph(int num_vertex) {
+    Graph(size_t num_vertex) {
         adjList.resize(num_vertex);
     }
 
     virtual ~Graph() { };
 
-    double getEdge(int s, int e) const {
+    double getEdge(size_t s, size_t e) const {
         auto edge = std::find_if(adjList[s].begin(), adjList[s].end(), 
-            [=] (const std::pair<int, double>& edge) {
+            [=] (const std::pair<size_t, double>& edge) {
                 return edge.first == e;
             });
         if (edge == adjList[s].end()) {
@@ -27,13 +27,13 @@ public:
         }
     }
 
-    void addEdge(int s, int e, double w) {
+    void addEdge(size_t s, size_t e, double w) {
         if (getEdge(s, e) < 0)
             adjList[s].push_back(std::make_pair(e, w));
         
     }
 
-    std::list<std::pair<int, double>> getNeighbors(int s) const {
+    std::list<std::pair<size_t, double>> getNeighbors(size_t s) const {
         return adjList[s];
     }
 
@@ -41,8 +41,8 @@ public:
         double numV = (double) adjList.size();
         double p = num_edges / (numV*(numV-1));
 
-        for (int i=0; i<numV; i++) {
-            for (int j=0; j<numV; j++) {
+        for (size_t i=0; i<numV; i++) {
+            for (size_t j=0; j<numV; j++) {
                 if (i==j)
                     continue;
 
@@ -54,11 +54,11 @@ public:
         }
     }
 
-    int getV() const {
-        return (int) adjList.size();
+    size_t getV() const {
+        return (size_t) adjList.size();
     }
 
-    void print() {
+    void prsize_t() {
         for (size_t i=0; i<adjList.size(); i++) {
             std::cout << i << " -> ";
             for (auto e : adjList[i]) {
@@ -69,7 +69,7 @@ public:
     }
 
 private:
-    std::vector<std::list<std::pair<int, double>>> adjList;
+    std::vector<std::list<std::pair<size_t, double>>> adjList;
 };
 
 #endif /* __GRAPH__ */

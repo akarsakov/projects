@@ -7,22 +7,22 @@
 
 class BinaryHeap {
 public:
-    BinaryHeap(int sz): capacity(sz), size(0) {
+    BinaryHeap(size_t sz): capacity(sz), size(0) {
         heap.resize(capacity);
         indexes.resize(capacity, -1);
     };
     
     virtual ~BinaryHeap() { }
     
-    bool isEmpty() {
+    bool isEmpty() const {
         return size == 0;
     }
     
-    bool isFull() {
+    bool isFull() const {
         return size == capacity;
     }
     
-    void insert(std::pair<int, double> elem) {
+    void insert(std::pair<size_t, double> elem) {
         if (isFull())
             return;
         
@@ -31,7 +31,7 @@ public:
         emersion(size-1);
     }
     
-    std::pair<int, double> top() {
+    std::pair<size_t, double> top() const {
         if (isEmpty())
             return std::make_pair(-1, -1);
         else
@@ -52,8 +52,8 @@ public:
         }
     }
 
-    void increaseKey(std::pair<int, double> newKey) {
-        int index = indexes[newKey.first];
+    void increaseKey(std::pair<size_t, double> newKey) {
+        size_t index = indexes[newKey.first];
         if (index >= 0) {
             if (newKey.second < heap[index].second) {
                 heap[index].second = newKey.second;
@@ -65,34 +65,34 @@ public:
     }
 
 private:
-    inline int parent(int index) {
+    inline static size_t parent(size_t index) {
         return index >> 1;
     }
     
-    inline int left(int index) {
+    inline static size_t left(size_t index) {
         return index << 1;
     }
     
-    inline int right(int index) {
+    inline static size_t right(size_t index) {
         return (index << 1) + 1;
     }
 
-    inline void swapElements(int i1, int i2) {
+    inline void swapElements(size_t i1, size_t i2) {
         std::swap(indexes[heap[i1].first], indexes[heap[i2].first]);
         std::swap(heap[i1], heap[i2]);
     }
 
-    void emersion(int index) {
+    void emersion(size_t index) {
         if (index == 0)
             return;
-        int p = parent(index);
+        size_t p = parent(index);
         if (heap[p].second > heap[index].second) {
             swapElements(p, index);
             emersion(p);
         }
     }
     
-    void dive(int index) {
+    void dive(size_t index) {
         double left_elem = left(index) < size ? heap[left(index)].second : DBL_MAX;
         double right_elem = right(index) < size ? heap[right(index)].second : DBL_MAX;
         
@@ -109,10 +109,10 @@ private:
         }
     }
 
-    int capacity;
-    int size;
-    std::vector<std::pair<int, double>> heap;
-    std::vector<int> indexes;
+    const size_t capacity;
+    size_t size;
+    std::vector<std::pair<size_t, double>> heap;
+    std::vector<size_t> indexes;
 };
 
 #endif /* __BINARY_HEAP__ */
