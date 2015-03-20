@@ -61,7 +61,7 @@ public:
             std::cout << "end" << std::endl;
 
             int min_path, max_path;
-            std::cout << "- calculating shortest paths.. ";
+            std::cout << "- calculating shortest paths.. " << std::endl;
             graph.getShortestPathsStatistics(mean_value, min_path, max_path);
             metrics.setFeatureValue(9, i, mean_value);
             metrics.setFeatureValue(10, i, (float) min_path);

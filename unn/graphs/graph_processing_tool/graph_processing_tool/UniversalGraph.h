@@ -282,14 +282,19 @@ private:
 
     void fillDistanceMap()
     {
-	    if (distanceMap == NULL)
-		    distanceMap = new int[numVertex*numVertex];
+	    if (distanceMap == NULL) {
+		    distanceMap = new (std::nothrow) int[numVertex*numVertex];
+            if (distanceMap == NULL) {
+                std::cout << "Can't allocate memory for distance map" << std::endl;
+            }
+        }
 
-        //int a = sizeof(std::list<size_t>);
-        //int b = sizeof(LinkedList);
-
-	    if (pathMap == NULL)
+	    if (pathMap == NULL) {
             pathMap = new LinkedList[numVertex*numVertex];
+            if (pathMap == NULL) {
+                std::cout << "Can't allocate memory for path map" << std::endl;
+            }
+        }
 	
 	    for (size_t i=0; i<numVertex; i++) {
 		    for (size_t j=0; j<numVertex; j++) {
@@ -305,8 +310,15 @@ private:
 		    }
 	    }
 
-	    for(int k=0; k < numVertex; k++)
+        std::cout << "\tInitialized distance map " << std::endl << "\tCalculating: ";
+
+	    for(int k=0; k < numVertex; k++) {
 		    tbb::parallel_for(tbb::blocked_range2d<size_t>(0, numVertex, 0, numVertex), FloydWarshall(pathMap, distanceMap, numVertex, k));
+            if (k % 1000 == 0)
+                std::cout << ".";
+        }
+
+        std::cout << " finished!" << std::endl;
 
 	    isDistanceMapCalculated = true;
     }
