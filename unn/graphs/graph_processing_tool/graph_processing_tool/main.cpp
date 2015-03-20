@@ -10,18 +10,19 @@
 using namespace std;
 
 int main(int argc, char *argv[])
-{    /*UniversalGraph g(8);
-    g.addEdge(0, 1, 1);
-    g.addEdge(0, 2, 1);
-    g.addEdge(0, 3, 1);
-    g.addEdge(4, 1, 1);
-    g.addEdge(4, 2, 1);
-    g.addEdge(4, 3, 1);
-    g.addEdge(4, 5, 1);
-    g.addEdge(4, 6, 1);
-    g.addEdge(7, 5, 1);
-    g.addEdge(7, 6, 1);*/
-    float maxCentrality, centrality;
+{    
+    //UniversalGraph g(8);
+    //g.addEdge(0, 1, 1);
+    //g.addEdge(0, 2, 1);
+    //g.addEdge(0, 3, 1);
+    //g.addEdge(4, 1, 1);
+    //g.addEdge(4, 2, 1);
+    //g.addEdge(4, 3, 1);
+    //g.addEdge(4, 5, 1);
+    //g.addEdge(4, 6, 1);
+    //g.addEdge(7, 5, 1);
+    //g.addEdge(7, 6, 1);
+    //float maxCentrality, centrality;
     //g.getBetweennessCentrality(maxCentrality, centrality);
     //cout << "max centrality = " << maxCentrality << ", centrality = " << centrality << endl;
 
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
     //cout << "max centrality = " << maxCentrality << ", centrality = " << centrality << endl;
     //return 0;
 
-    std::string operation(argv[1]);
+    string operation(argv[1]);
     if (operation == "generate") {
 	    string train_file(argv[2]);
 	    string test_file(argv[3]);
@@ -58,7 +59,6 @@ int main(int argc, char *argv[])
 	    auto start = std::chrono::system_clock::now();
 
         builder.process(output);
-        //calc.process(outFile);
 
 	    auto duration = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - start);
 	    cout << "Done!" << endl;

@@ -5,9 +5,11 @@
 #include <limits>
 #include <list>
 #include <stack>
+#include <queue>
 #include <iostream>
 
 #include <tbb\parallel_for.h>
+#include <tbb\parallel_reduce.h>
 #include <tbb\blocked_range.h>
 #include <tbb\blocked_range2d.h>
 #include <tbb\parallel_sort.h>
@@ -18,7 +20,7 @@
 class UniversalGraph
 {
 public:
-    UniversalGraph(size_t num_vertex): numVertex(num_vertex), isDistanceMapCalculated(false), distanceMap(NULL), pathMap(NULL) {
+    UniversalGraph(size_t num_vertex): numVertex(num_vertex), isDistanceMapCalculated(false), distanceMap(NULL), calc(NULL) {
 		matSize = numVertex*(numVertex-1)/2;
 		adjMat = new (std::nothrow) float[matSize];
         if (adjMat == NULL)
@@ -35,8 +37,8 @@ public:
 	    if (distanceMap != NULL)
             delete[] distanceMap;
 
-	    if (pathMap == NULL)
-            delete[] pathMap;
+	    if (calc != NULL)
+            delete calc;
     }
 
     void clear() {
@@ -133,32 +135,27 @@ public:
         size_t sum = 0;
         min = std::numeric_limits<int>::max();
         max = std::numeric_limits<int>::min();
+        size_t numDistPairs = 0;
 
         for (size_t i=0; i<numVertex; i++)
             for (size_t j=i+1; j<numVertex; j++) {
-                sum += distanceMap[i*numVertex + j];
-                min = std::min(min, distanceMap[i*numVertex + j]);
-                max = std::max(max, distanceMap[i*numVertex + j]);
+                if (distanceMap[i*numVertex + j] < std::numeric_limits<int>::max()) {
+                    sum += distanceMap[i*numVertex + j];
+                    numDistPairs++;
+                    min = std::min(min, distanceMap[i*numVertex + j]);
+                    max = std::max(max, distanceMap[i*numVertex + j]);
+                }
             }
 
-        m = (float) sum / (numVertex*(numVertex-1));
+        m = (float) sum / numDistPairs;
     }
 
     void getBetweennessCentrality(float& maxCentrality, float& centralization) {
         if (!isDistanceMapCalculated)
             fillDistanceMap();
 
-        float* centrality = new float[numVertex];
-        std::fill(centrality, centrality+numVertex, 0.f);
-        size_t numAllPaths = 0;
-
-        for (size_t i=0; i<numVertex; i++) {
-            for (size_t j=i+1; j<numVertex; j++) {
-                if (distanceMap[i*numVertex + j] < std::numeric_limits<int>::max()) {
-                    numAllPaths += fillBetweennessCentralityArray(centrality, i, j);
-                }
-            }
-        }
+        float* centrality = calc->centrality;
+        size_t numAllPaths = calc->numPaths;
 
         maxCentrality = *std::max_element(centrality, centrality+numVertex);
         
@@ -216,34 +213,34 @@ public:
 
 private:
 
-    size_t fillBetweennessCentralityArray(float* centrality, size_t start, size_t end) {
-        std::stack<size_t> st;
-        size_t numPaths = pathMap[start*numVertex + end].getHead()->data != end ? 1 : 0;
-        st.push(start);
+    //size_t fillBetweennessCentralityArray(float* centrality, size_t start, size_t end) {
+    //    std::stack<size_t> st;
+    //    size_t numPaths = pathMap[start*numVertex + end].getHead()->data != end ? 1 : 0;
+    //    st.push(start);
 
-        while (!st.empty()) {
-            size_t curVertex = st.top();
-            st.pop();
+    //    while (!st.empty()) {
+    //        size_t curVertex = st.top();
+    //        st.pop();
 
-            if (curVertex == end)
-                continue;
-            
-            if (curVertex != start) {
-                centrality[curVertex] += 1;
-            }
+    //        if (curVertex == end)
+    //            continue;
+    //        
+    //        if (curVertex != start) {
+    //            centrality[curVertex] += 1;
+    //        }
 
-            if (pathMap[curVertex*numVertex + end].size() > 1)
-                numPaths += pathMap[curVertex*numVertex + end].size() - 1;
+    //        if (pathMap[curVertex*numVertex + end].size() > 1)
+    //            numPaths += pathMap[curVertex*numVertex + end].size() - 1;
 
-            for (auto head = pathMap[curVertex*numVertex + end].getHead(); ; head = head->next) {
-                if (head == NULL)
-                    break;
-                st.push(head->data);
-            }
-        }
+    //        for (auto head = pathMap[curVertex*numVertex + end].getHead(); ; head = head->next) {
+    //            if (head == NULL)
+    //                break;
+    //            st.push(head->data);
+    //        }
+    //    }
 
-        return numPaths;
-    }
+    //    return numPaths;
+    //}
 
     class FloydWarshall
     {
@@ -279,8 +276,136 @@ private:
 	    }
     };
 
+    class ShortestPathsCalculator {
+    public:
+        ShortestPathsCalculator(UniversalGraph& g_): g(g_), numPaths(0) {
+            centrality = new float[g.numVertex];
+            std::fill(centrality, centrality+g.numVertex, 0);
+            paths = new LinkedList[g.numVertex];
+        }
 
-    void fillDistanceMap()
+        ShortestPathsCalculator(ShortestPathsCalculator& calc, tbb::split): g(calc.g), numPaths(0) {
+            centrality = new float[g.numVertex];
+            std::fill(centrality, centrality+g.numVertex, 0);
+            paths = new LinkedList[g.numVertex];
+        }
+
+        virtual ~ShortestPathsCalculator() {
+            delete[] centrality;
+            delete[] paths;
+        }
+
+        void operator()( const tbb::blocked_range<size_t>& r ) {
+            for (size_t v=r.begin(); v<r.end(); v++) {
+                Wave(v);
+            }
+        }
+
+        void join( ShortestPathsCalculator& rhs ) {
+            for (size_t i=0; i<g.numVertex; i++) {
+                centrality[i] += rhs.centrality[i];
+            }
+            numPaths += rhs.numPaths;
+        }
+
+        UniversalGraph& g;
+        float* centrality;
+        size_t numPaths;
+
+    private:
+        LinkedList* paths;
+
+        void Wave(size_t v) {
+            std::queue<size_t> q;
+            int* distanceMap = g.distanceMap + v*g.numVertex;
+            q.push(v);
+            distanceMap[v] = 0;
+
+            while (!q.empty()) {
+                size_t cur = q.front();
+                q.pop();
+
+                for (size_t i=0; i<g.numVertex; i++) {
+                    if (i == cur)
+                        continue;
+
+                    if (g.getEdge(i, cur)) {
+                        if (distanceMap[i] > distanceMap[cur] + 1) {
+                            distanceMap[i] = distanceMap[cur] + 1;
+                            paths[i].add(cur);
+                            q.push(i);
+                        } else if (distanceMap[i] == distanceMap[cur] + 1) {
+                            paths[i].add(cur);
+                        }
+                    }
+                }
+            }
+
+            for (size_t i=0; i<g.numVertex; i++) {
+                if (i == v)
+                    continue; 
+
+                if (distanceMap[i] < std::numeric_limits<int>::max()) {
+                    numPaths += followPath(v, i);
+                }
+            }
+
+            for (size_t i=0; i<g.numVertex; i++) {
+                paths[i].clear();
+            }
+        }
+
+        size_t followPath(size_t start, size_t end) {
+            std::stack<size_t> st;
+            if (paths[end].getHead()->data == start)
+                return 0;
+
+            size_t numPaths = 1;
+            st.push(end);
+
+            while (!st.empty()) {
+                size_t curVertex = st.top();
+                st.pop();
+
+                if (curVertex == start)
+                    continue;
+
+                if (curVertex != end)
+                    centrality[curVertex] += 1;
+
+                if (paths[curVertex].size() > 1)
+                    numPaths += paths[curVertex].size() - 1;
+
+                for (auto head = paths[curVertex].getHead(); ; head = head->next) {
+                    if (head == NULL)
+                        break;
+                    st.push(head->data);
+                }
+            }
+            return numPaths;
+        }
+    };
+
+    void fillDistanceMap() {
+        if (distanceMap == NULL) {
+		    distanceMap = new (std::nothrow) int[numVertex*numVertex];
+            if (distanceMap == NULL) {
+                std::cout << "Can't allocate memory for distance map" << std::endl;
+            }
+        }
+        std::fill(distanceMap, distanceMap+(numVertex*numVertex), std::numeric_limits<int>::max());
+
+        if (calc != NULL) {
+            delete calc;
+        }
+        calc = new ShortestPathsCalculator(*this);
+
+        tbb::parallel_reduce(tbb::blocked_range<size_t>(0, numVertex, 1), *calc);
+
+        isDistanceMapCalculated = true;
+    }
+
+    /*void fillDistanceMap()
     {
 	    if (distanceMap == NULL) {
 		    distanceMap = new (std::nothrow) int[numVertex*numVertex];
@@ -321,7 +446,7 @@ private:
         std::cout << " finished!" << std::endl;
 
 	    isDistanceMapCalculated = true;
-    }
+    }*/
 
     inline size_t getIndex(size_t s, size_t e)
 	{
@@ -344,7 +469,7 @@ private:
     float* adjMat;
 
     int* distanceMap;
-    LinkedList* pathMap; 
+    ShortestPathsCalculator* calc;
 
     bool isDistanceMapCalculated;
 }; 
