@@ -20,7 +20,7 @@ private:
     std::vector<std::string> featureNames;
     T* data;
 public:
-    Data(std::string filename);
+    Data(std::string filename, bool hasHeader=false);
 	Data(size_t numF, size_t numE);
 	virtual ~Data() { delete[] data; };
 
@@ -69,7 +69,7 @@ static std::string trim(std::string str)
 }
 
 template<typename T>
-Data<T>::Data(std::string filename)
+Data<T>::Data(std::string filename, bool hasHeader)
 {
     ifstream file(filename);
     if (!file.is_open())
@@ -86,12 +86,21 @@ Data<T>::Data(std::string filename)
         stringstream line_stream(line);
         string name;
         
-        while (getline(line_stream, name, ','))
-            featureNames.push_back(trim(name));
+        if (hasHeader) {
+            while (getline(line_stream, name, ','))
+                featureNames.push_back(trim(name));
+        } else {
+            int index = 0;
+            char buf[80];
+            while (getline(line_stream, name, ',')) {
+                itoa(index++, buf, 10);
+                featureNames.push_back(std::string(buf));
+            }
+        }
     }
     numFeatures = (int) featureNames.size();
 
-    int numLines = 0;
+    int numLines = hasHeader ? 0 : 1;
     while (getline(file, line))
         ++numLines;
     numExamples = numLines;

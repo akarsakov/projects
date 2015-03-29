@@ -60,6 +60,14 @@ public:
         return adjMat[ind] > 0.f;
     }
 
+    size_t countNonZero() {
+        size_t res = 0;
+        for (size_t i=0; i<matSize; i++)
+            if (adjMat[i] > 0.f)
+                res++;
+        return res;
+    }
+
     inline int getDegree(size_t v) {
         int degree = 0;
         for (size_t i=0; i<numVertex; i++) {
@@ -173,7 +181,7 @@ public:
             out.write((const char*) &numVertex, sizeof(size_t));
 
             for (size_t i=0; i<matSize; i++) {
-                out.write((const char*) adjMat + i, sizeof(float));
+                out.write((const char*) (adjMat + i), sizeof(float));
             }
         } else {
             std::cout << "Incorrect path for saving graph: " << filename << std::endl;
@@ -202,7 +210,7 @@ public:
             }
 
             for (size_t i=0; i<matSize; i++) {
-                in.read((char*) adjMat + i, sizeof(float));
+                in.read((char*) (adjMat + i), sizeof(float));
             }
         } else {
             std::cout << "Incorrect graph file: " << filename << std::endl;
@@ -296,9 +304,11 @@ private:
         }
 
         void operator()( const tbb::blocked_range<size_t>& r ) {
+            std::cout << "start: [" << r.begin() << ", " << r.end() << "] " << std::endl;
             for (size_t v=r.begin(); v<r.end(); v++) {
                 Wave(v);
             }
+            std::cout << "end: [" << r.begin() << ", " << r.end() << "] " << std::endl;
         }
 
         void join( ShortestPathsCalculator& rhs ) {
@@ -400,7 +410,7 @@ private:
         }
         calc = new ShortestPathsCalculator(*this);
 
-        tbb::parallel_reduce(tbb::blocked_range<size_t>(0, numVertex, 1), *calc);
+        tbb::parallel_reduce(tbb::blocked_range<size_t>(0, numVertex, 1000), *calc);
 
         isDistanceMapCalculated = true;
     }

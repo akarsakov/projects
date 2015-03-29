@@ -50,6 +50,8 @@ public:
             graph.applyThreshold(sd*0.75);
             std::cout << "end" << std::endl;
 
+            std::cout << "- non-zero: " << graph.countNonZero() << std::endl;
+
             std::cout << "- calculating degree centrality.. ";
             float centrality;
             graph.getDegreeStatistics(mean_value, var_value, max_value, min_value, centrality);
