@@ -18,11 +18,11 @@ public:
     MahalanobisWeightCalculator(): x0(0.0), y0(0.0), a(0.0), b(0.0), d(0.0) {};
     ~MahalanobisWeightCalculator() {};
 
-	void setModel(const T* x, const T* y, const int size)
+	void setModel(const T* x, const T* y, const size_t size)
 	{
 		T meanX = 0, meanY = 0, meanX2 = 0, meanY2 = 0, meanXY = 0;
         
-		for (int i=0; i < size; i++)
+		for (size_t i=0; i < size; i++)
 		{
 			meanX+=x[i];
 			meanY+=y[i];

@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
 	    string train_file(argv[2]);
 	    string test_file(argv[3]);
 	    string output(argv[4]);
+        float coef = atof(argv[5]);
 	    
 	    cout << "reading train file... ";
 	    Data<float> train(train_file);
@@ -54,11 +55,12 @@ int main(int argc, char *argv[])
 	    cout << "Number of test features: " << test.getNumFeatures() << endl;
 	    cout << "Number of test examples: " << test.getNumExamples() << endl;
 
-        UniversalGraphBuilder builder(train, test);
+        //UniversalGraphBuilder builder(train, test);
+        UniversalMetricsCalculator2 calc(train, test);
 
 	    auto start = std::chrono::system_clock::now();
 
-        builder.process(output);
+        calc.process(output, coef);
 
 	    auto duration = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - start);
 	    cout << "Done!" << endl;
@@ -67,6 +69,7 @@ int main(int argc, char *argv[])
         string graphPath(argv[2]);
         string outFile(argv[4]);
         int numGraphs = atoi(argv[3]);
+        
 
         UniversalMetricsCalculator calc(numGraphs, graphPath);
 
