@@ -1,39 +1,44 @@
-library(e1071);
+library(e1071)
+data_path <- "D:/Dev/bio/data/BLCA/test_0/"
 
+setwd(data_path)
 
-setwd('D:/Dev/bio/scripts/cl_correct')
+labels <- read.csv("test_labels.csv", header=F)
+labels <- c(labels == "cancer")
 
-cancerData = read.table("metrics_cancer.csv", header=TRUE, sep=',')
-cancerData$X <- NULL
-cancerWeights = read.table("weights_cancer.csv", header=TRUE, sep=',')
-cancerData = cbind(cancerData, cancerWeights)
-cancerData["class"] <- "cancer"
+indexes <- seq_along(labels)
+cancerIndexes <- indexes[labels]
+healthyIndexes <- indexes[!labels]
+results <- data.frame(Dir=character(),
+                 classificationRate=double(), 
+                 healthyRate=double(), 
+                 cancerRate=double())
 
-healthyData = read.table("metrics_healthy.csv", header=TRUE, sep=',')
-healthyData$X <- NULL
-healthyWeights = read.table("weights_healthy.csv", header=TRUE, sep=',')
-healthyData = cbind(healthyData, healthyWeights)
-healthyData["class"] <- "healthy"
+test_dirs <- dir()[file.info(dir())$isdir]
 
-index <- sample(1:nrow(cancerData), 30)
-trainCancer = cancerData[index,]
-testCancer = cancerData[-index,]
+for (cur_dir in test_dirs) {
+    data <- read.csv(paste(data_path, cur_dir,"/metrics.csv", sep=""))
+    data$max_degree <- NULL 
+    
+    trainCancer <- sample(cancerIndexes, length(cancerIndexes)/2)
+    trainHealthy <- sample(healthyIndexes, length(healthyIndexes)/2)
+    trainData <- data[(seq_along(labels) %in% trainCancer) | (seq_along(labels) %in% trainHealthy),]
+    testData <- data[!((seq_along(labels) %in% trainCancer) | (seq_along(labels) %in% trainHealthy)),]
+    
+    trainLabels <- labels[(seq_along(labels) %in% trainCancer) | (seq_along(labels) %in% trainHealthy)]
+    testLabels <- labels[!((seq_along(labels) %in% trainCancer) | (seq_along(labels) %in% trainHealthy))]
+    
+    trainData$label <- trainLabels
+    model <- svm(label~., data = trainData, type="C-classification")
+    result <- predict(model, testData)
+    t <- table(result, testLabels)
+    
+    classRate <- (t[1] + t[4]) / sum(t)
+    healthyRate <- t[1] / (t[1] + t[2])
+    cancerRate <- t[4] / (t[3] + t[4])
+    print(cur_dir)
+    results[nrow(results)+1, ] <- list(paste(cur_dir, "!"), classRate, healthyRate, cancerRate)
+}
 
-index <- sample(1:nrow(healthyData), 30)
-trainHealth = healthyData[index,]
-testHealth = healthyData[-index,]
-
-train = rbind(trainCancer, trainHealth)
-test = rbind(testCancer, testHealth)
-rownames(train) <- NULL
-rownames(test) <- NULL
-
-print("SVM")
-svm_model <- svm( train$class ~ . -density -min_weight, train, kernel = "radial", type="C-classification" )
-x_test <- subset(test, select = -class);
-predy <- predict(svm_model, x_test);
-table <- table(test$class, predy );
-
-print(paste("Error 1 (wrong healthy predict):", table[1,2]/sum(table)))
-print(paste("Error 2 (wrong cancer predict):", table[2,1]/sum(table)))
-print(paste("Error: ", sum(diag(table))/sum(table)))
+results$Dir <- test_dirs
+results
