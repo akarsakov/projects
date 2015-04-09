@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>generate D:\Dev\bio\data\BLCA\test_0\train.csv D:\Dev\bio\data\BLCA\test_0\test.csv D:\Dev\bio\data\BLCA\test_0\metrics.csv 1.5</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>old D:\share\work\unn\dna_methylation\data\cancer\BLCA\test_3\train.csv D:\share\work\unn\dna_methylation\data\cancer\BLCA\test_3\test.csv D:\share\work\unn\dna_methylation\data\cancer\BLCA\test_3\old_metrics.csv</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerEnvironment>PATH=C:\Program Files (x86)\Intel\Composer XE 2013 SP1\redist\intel64\tbb\vc11;%PATH%</LocalDebuggerEnvironment>
   </PropertyGroup>

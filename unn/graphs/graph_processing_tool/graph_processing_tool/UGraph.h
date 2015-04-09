@@ -265,47 +265,6 @@ void UGraph<T>::writeToFile(std::string filename)
 }
 
 template<typename T>
-long UGraph<T>::diameter()
-{
-	long diam=0;
-
-	long* dist=new long[num_vertex];
-
-	for (int v=0; v<num_vertex; v++)
-	{
-		std::fill(dist, dist+num_vertex, LONG_MAX);
-		dist[v]=0;
-
-		std::queue<int> q;
-		q.push(v);
-		
-		while (!q.empty()) 
-		{
-			int u = q.front();
-			q.pop();
-			
-			std::vector<long> neighbors;
-			neighbors = getNeighbors(u);
-
-			for (size_t i = 0; i < neighbors.size(); i++) 
-			{
-				if (dist[u] + 1 < dist[neighbors[i]] ) 
-				{
-					dist[neighbors[i]] = dist[u] + 1;
-					q.push(neighbors[i]);
-
-					if (diam<dist[neighbors[i]]) 
-						diam=dist[neighbors[i]];
-				}
-			}
-		}
-	}
-
-	delete[] dist;
-	return diam;
-}
-
-template<typename T>
 void UGraph<T>::fill_distance_map()
 {
 	if (distance_map == NULL)
