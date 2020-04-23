@@ -19,6 +19,8 @@ scaling inference algorithms to richer dataset.
 
 __SPIRAL__
 
+![image info](./imgs/modes.png)
+
 ![image info](./imgs/SPIRAL.png)
 
 
@@ -28,7 +30,7 @@ __SPIRAL__
 
 ![image info](./imgs/loss_d.png)
 
-- The generator is trained by A2C (Advantage Actor-Critic), a variant of the REINFORCE algorithm.
+- The generator is trained by A2C (Advantage Actor-Critic)
 
 ![image info](./imgs/loss_gen.png)
 
@@ -105,25 +107,17 @@ with following reward:
     the nose are visible.
     - Authors observed that model tends to generate strokes in the first half of the episode that
     are fully occluded by strokes in the second half.
-    - In order to demonstrate the computational hardness of the task, we ran a general-purpose
-    Metropolis-Hastings inference algorithm on a set of 100
-    images. The algorithm samples an execution trace defining
-    attributes for a maximum of 20 primitives. As shown in
-    figure below, the MCMC search baseline was unable to solve
-    the task even after a large number of evaluations.
-    
-    ![image info](./imgs/MCMC.png)
 
 
 ### Contribution summary
 
 - An adversarially trained reinforcement learning agent
 that interprets and generates images in the space of
-visual programs. Crucially, the architecture of our
+visual programs. Crucially, the architecture of
 agent is agnostic both to the semantics of the visual
 program and to the domain.
 - Scaling inverse graphics to real world and procedural
-datasets without the need for labels. In particular, our
+datasets without the need for labels. In particular,
 model discovers pen strokes that give rise to MNIST
 and OMNIGLOT characters, brush strokes that give rise
 to celebrity faces, and scene descriptions that, once rendered, reconstruct an image of a 3D scene (Figure 1).
