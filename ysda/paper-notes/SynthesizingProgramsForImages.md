@@ -64,6 +64,8 @@ with following reward:
     - 200,000 color headshots of celebrities with large variation in poses, backgrounds and lighting conditions.
     - Only reconstruction setup
     
+    ![image info](./imgs/CELEBA_rec.png)
+    
 4. MUJOCO
 
     - 3D scene contained up to 5 objects
